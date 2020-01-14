@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8062753a-8278-4808-aea5-55cbb45de3eb" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ProjectId" id="1WLR1vJ5Qfj9ApOiClirYz2uLZi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8062753a-8278-4808-aea5-55cbb45de3eb" name="Default Changelist" comment="" />
+      <created>1578926676792</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1578926676792</updated>
+      <workItem from="1578926678237" duration="141000" />
+      <workItem from="1578927024285" duration="310000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="132" y="16" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578927286013">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="132" y="16" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1578927286013" />
+    <state x="458" y="116" key="FileChooserDialogImpl" timestamp="1578927279148">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="458" y="116" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1578927279148" />
+    <state x="179" y="6" key="SettingsEditor" timestamp="1578926815629">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="179" y="6" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1578926815629" />
+    <state x="354" y="187" key="com.intellij.ide.util.TipDialog" timestamp="1578927025750">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="354" y="187" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1578927025750" />
+    <state x="364" y="210" width="705" height="305" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1578926808832">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="364" y="210" width="705" height="305" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1366.728@0.0.1366.728" timestamp="1578926808832" />
+  </component>
+</project>
