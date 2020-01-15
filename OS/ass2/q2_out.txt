@@ -1,0 +1,9 @@
+total 25
+-rwxrwxrwx 1 anjishnu anjishnu  427 Jan 15 14:06 q1.c
+-rwxrwxrwx 1 anjishnu anjishnu 8696 Jan 15 14:16 q2
+-rwxrwxrwx 1 anjishnu anjishnu 1937 Jan 15 14:06 q2.c
+-rwxrwxrwx 1 anjishnu anjishnu    0 Jan 15 14:17 q2_out.txt
+-rwxrwxrwx 1 anjishnu anjishnu  733 Jan 15 14:09 q3.c
+-rwxrwxrwx 1 anjishnu anjishnu  868 Jan 15 14:10 q4.c
+-rwxrwxrwx 1 anjishnu anjishnu  831 Jan 15 14:11 q5.c
+ls -l 
