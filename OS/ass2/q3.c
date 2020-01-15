@@ -18,27 +18,41 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #define MAX 100
+int i = 1;
 int main(int argc, char *argv[]) {
-  static int i = 1;
-  while (i < argc) {
-    int pid = fork();
-    if (pid == 0) {
+  int pid = 0;
+  while (i <= argc-1) {
+
+    if ((pid = fork()) == 0) {
+
       int j = 0;
+
       for (j = i + 1; j < argc; j++) {
+
         if (argv[j][0] != '-') {
           break;
+        }
+
+        int length = j - i + 1;
+
+        char **arr;
+        arr = malloc(length * sizeof(char *));
+        for (int k = 0; k < length; k++) {
+          arr[k] = malloc(MAX * sizeof(char));
+          // copy the strings to arr
+          for(int l = 0; l < strlen(argv[k]); l++){
+            arr[k][l] = argv[k][l];
+          }
+        }
+
+        execvp(arr[0], arr);
       }
-      int length = j - i + 1;
-      char **arr;
-      arr = malloc(length * sizeof(char *));
-      for (int k = 0; k < length; k++) {
-        arr[k] = malloc(MAX * sizeof(char));
-        strcpy(arr[k], argv[i+k])
-        
-      }
-      execvp(arr[k], arr);
+
     }
+    
     i++;
+  
   }
+
   return 0;
 }
