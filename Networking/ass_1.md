@@ -23,12 +23,11 @@
         10 packets transmitted, 10 received, 0% packet loss, time 9011ms
         rtt min/avg/max/mdev = 0.797/0.907/1.432/0.178 ms
 
-
-1c. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
+1c.1 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
 
         IP address of www.google.com : 172.217.3.100
 
-        **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
+1c.2 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.iiests.ac.in**
 
         IP address of local DNS server of IIEST (www.iiests.ac.in) : 14.139.223.183
 
@@ -41,7 +40,7 @@
 
         MAC address of the device that is performing as network gateway : 157.245.240.1
 
-1f. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# nslookup www.google.com**
+1f.1 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# nslookup www.google.com**
 
         Server:         127.0.0.53
         Address:        127.0.0.53#53
@@ -55,7 +54,7 @@
         Thus, IP Address of www.google.com is 172.217.3.100
         Doing reverse domain lookup.
 
-      **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# nslookup 172.217.3.100**
+1f.2 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# nslookup 172.217.3.100**
 
         100.3.217.172.in-addr.arpa      name = lga34s18-in-f4.1e100.net.
 

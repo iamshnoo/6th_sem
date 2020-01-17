@@ -2,42 +2,46 @@
 
 ## Anjishnu Mukherjee B05-511017020 (510517086)
 
-2a. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump --version**
+2a.1 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump --version**
 
-        ```
-        eth0: flags=4419<UP,BROADCAST,RUNNING,PROMISC,MULTICAST>  mtu 1500
-        inet 157.245.240.68  netmask 255.255.240.0  broadcast 157.245.255.255
-        inet6 fe80::6cb5:9ff:fe98:23a3  prefixlen 64  scopeid 0x20<link>
-        ether 6e:b5:09:98:23:a3  txqueuelen 1000  (Ethernet)
-        RX packets 456235  bytes 139315738 (139.3 MB)
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 491898  bytes 73484410 (73.4 MB)
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-        ```
+        tcpdump version 4.9.2
+        libpcap version 1.8.1
+        OpenSSL 1.1.1  11 Sep 2018
 
-        The value next to inet is the IPv4 address of the machine,
-        i.e. 157.245.240.68
+2a.2 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump --version**
 
-2b. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ping 8.8.8.8**
+        1.eth0 [Up, Running]
+        2.any (Pseudo-device that captures on all interfaces) [Up, Running]
+        3.lo [Up, Running, Loopback]
+        4.nflog (Linux netfilter log (NFLOG) interface)
+        5.nfqueue (Linux netfilter queue (NFQUEUE) interface)
+        6.usbmon1 (USB bus number 1)
 
-        ```
-        8.8.8.8 ping statistics
-        10 packets transmitted, 10 received, 0% packet loss, time 9011ms
-        rtt min/avg/max/mdev = 0.797/0.907/1.432/0.178 ms
-        ```
+        There are 6 interfaces available.
 
-2c. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
+2a.3 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ifconfig eth0 promisc**
 
-        IP address of www.google.com : 172.217.3.100
+        Switch the ethernet interface to promiscuous mode.
 
-        **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
+2b.1 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 20 -n -w results_with_n.pcap**
 
-        IP address of local DNS server of IIEST (www.iiests.ac.in) : 14.139.223.183
+        Listen to the promiscuous mode interface of host with -n option.
 
-2d. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# traceroute www.google.com**
+        Role of -n flag:
+        ----------------
+         -n     Don't convert addresses (i.e., host addresses, port numbers, etc.) to names.
+
+2b.2 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 20 -w results_without_n.pcap**
+
+        Listen to the promiscuous mode interface of host without -n option.
+
+2c.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -r results_with_n.pcap**
 
         Number of hops = 8
-        IP a network gateway of subnet = 157.245.240.254 (1st hop's IPv4 address)
+
+2c.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -r results_without_n.pcap**
+
+        Number of hops = 8
 
 2e. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# arp -an** (arp -a will print which one is gateway)
 
