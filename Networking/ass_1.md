@@ -26,10 +26,7 @@
 1c.1 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
 
         IP address of www.google.com : 172.217.3.100
-
-1c.2 **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.iiests.ac.in**
-
-        IP address of local DNS server of IIEST (www.iiests.ac.in) : 14.139.223.183
+        IP address of local DNS server of IIEST (www.iiests.ac.in) :  127.0.0.53
 
 1d. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# traceroute www.google.com**
 
