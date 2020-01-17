@@ -2,7 +2,7 @@
 
 ## Anjishnu Mukherjee B05-511017020 (510517086)
 
-- 1a. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ifconfig**
+1a. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ifconfig**
 
         ```
         eth0: flags=4419<UP,BROADCAST,RUNNING,PROMISC,MULTICAST>  mtu 1500
@@ -18,7 +18,7 @@
         The value next to inet is the IPv4 address of the machine,
         i.e. 157.245.240.68
 
-  1b. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ping 8.8.8.8**
+1b. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ping 8.8.8.8**
 
         ```
         8.8.8.8 ping statistics
@@ -26,7 +26,7 @@
         rtt min/avg/max/mdev = 0.797/0.907/1.432/0.178 ms
         ```
 
-  1c. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
+1c. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# dig www.google.com**
 
         IP address of www.google.com : 172.217.3.100
 
