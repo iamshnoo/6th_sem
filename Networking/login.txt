@@ -1,0 +1,4 @@
+Droplet Name: ubuntu-s-1vcpu-1gb-nyc1-01
+IP Address: 157.245.240.68
+Username: root
+Password: 64450933d09eff7995d9fb6fd5 -> anjishnu
