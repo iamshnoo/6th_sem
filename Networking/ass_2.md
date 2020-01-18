@@ -113,13 +113,11 @@
         00:00:00.000050 ...
         00:00:00.000038 ...
         00:00:00.001187 ...
-        5 packets captured
         ...
 
-        To get the inter-arrival times while capturing packets, I use the fact
-        that the -ttt flag prints a delta (micro-second resolution) between
-        current and previous line on each dump line.
-        In the output displayed above, I have only included
+        To get the inter-arrival times while capturing packets, I use the fact that the
+        -ttt flag prints a delta (micro-second resolution) between current and previous
+        line on each dump line. In the output displayed above, I have only included
         the first colum of the output corresponding to these deltas.
 
 2g. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump host www.google.com -a**
