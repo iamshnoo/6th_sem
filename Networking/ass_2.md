@@ -141,22 +141,22 @@
         The tcpdump command to capture the packets associated with traceroute.
         TODO : Explain the different fields of each request and reply.
 
-2i.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src <IP addr> and dst <IP addr>**
+2i.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr and dst IP addr**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as both source and destination.
 
-2i.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src <IP addr>**
+2i.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only source.
 
-2i.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump dst <IP addr>**
+2i.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump dst IP addr**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only destination.
 
-2j. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src <source IP addr> and dst <destination IP addr> icmp and port 22**
+2j. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr and dst IP addr icmp and port 22**
 
        The tcpdump command that captures packets containing ICMP
        packets between two hosts with different IP addresses.
