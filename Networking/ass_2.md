@@ -126,6 +126,8 @@
         command to work. We need to run tcpdump first and then browse
         something on google.com to get network traffic.
 
+        TODO : Run this command and paste the output here.
+
 2h.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -i eth0 icmp**
 
         The tcpdump command to capture the packets associated with ping.
