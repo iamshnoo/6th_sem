@@ -2,29 +2,28 @@
 
 ## Anjishnu Mukherjee B05-511017020 (510517086)
 
-| Relevant flags | Corresponding tcpdump functionality                                                                     |
-| :------------: | :------------------------------------------------------------------------------------------------------ |
-|       -D       | Display available interfaces.                                                                           |
-|       -n       | Don't convert addresses (i.e., host addresses, port numbers, etc.) to names.                            |
-|    -c count    | Exit after receving count number of packets. (Here, count = 20)                                         |
-|    -w file     | Write the raw packets to file rather than parsing and printing them out.                                |
-|                | They can later be printed with the -r option. (Here, file = "results_with_n.pcap")                      |
-|    -r file     | Read packets from file (which was created with the -w option or by other tools that                     |
-|                | write pcap or pcapng files).                                                                            |
-|       -e       | Print the link-level header on each dump line. This can be used, for example,                           |
-|                | to print MAC layer addresses for protocols such as Ethernet and IEEE 802.11.                            |
-|  -i interface  | Listen on interface. If unspecified, tcpdump searches the system interface list                         |
-|                | for the lowest numbered, configured up interface (excluding loopback),                                  |
-|                | which may turn out to be, for example, ``eth0''.                                                        |
-|      -ttt      | Print a delta (micro-second resolution) between current and previous line on each dump line.            |
-|       -A       | Print packet information in Ascii format. Handy for capturing web pages.                                |
-|   expression   | Selects which packets will be dumped. If no expression is given, all packets on the net will be dumped. |
-|                | Otherwise,only packets for which expression is `true' will be dumped.                                   |
-|                | For the expression syntax, see pcap-filter(7).                                                          |
-|      host      | Capture packets from specific hosts.                                                                    |
-|      src       | Capture packets from specific source.                                                                   |
-|      dst       | Capture packets from specific destination.                                                              |
-|    <[port]>    | Capture packets from specific port.                                                                     |
+| Relevant flags | Corresponding tcpdump functionality                                                                       |
+| :------------: | :-------------------------------------------------------------------------------------------------------- |
+|       -D       | Display available interfaces.                                                                             |
+|       -n       | Don't convert addresses (i.e., host addresses, port numbers, etc.) to names.                              |
+|      -nn       | Stop Domain Name translation and lookups (Host names or port names).                                      |
+|    -c count    | Exit after receving count number of packets. (Here, count = 20)                                           |
+|    -w file     | Write the raw packets to file rather than parsing and printing them out.                                  |
+|    -r file     | Read packets from file (which was created with the -w option)                                             |
+|      -ttt      | Print a delta (micro-second resolution) between current and previous line on each dump line.              |
+|       -A       | Print packet information in Ascii format. Handy for capturing web pages.                                  |
+|      host      | Capture packets from specific hosts.                                                                      |
+|      src       | Capture packets from specific source.                                                                     |
+|      dst       | Capture packets from specific destination.                                                                |
+|     [port]     | Capture packets from specific port.                                                                       |
+|   -s snaplen   | Snarf snaplen bytes of data from each packet.Setting snaplen to 0 sets it to the default of 262144.       |
+|                | Setting snaplen to 0 sets it to the default of 262144.                                                    |
+|       -e       | Print the link-level header on each dump line. This can be used, for example,                             |
+|                | to print MAC layer addresses for protocols such as Ethernet and IEEE 802.11.                              |
+|  -i interface  | Listen on interface. If unspecified, tcpdump searches the system interface list                           |
+|                | for the lowest numbered, configured up interface (excluding loopback), which may be, for eg, eth0.        |
+|   expression   | Selects which packets will be dumped. If no expression is given, all packets on the net will be dumped.   |
+|                | Otherwise, packets for which expression is true will be dumped.For expression syntax, see pcap-filter(7). |
 
 2a.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump --version**
 
@@ -124,47 +123,151 @@
 
         www.google.com needs to be opened in the browser window for this
         command to work. We need to run tcpdump first and then browse
-        something on google.com to get network traffic.
+        something on google.com to get network traffic. -a flag ensures output
+        is in ASCII format.
 
-        TODO : Run this command and paste the output here.
+        ...
+        10:06:52.192177 IP laptop.43623 > del03s14-in-f4.1e100.net.443: UDP, length 1350
+        10:06:52.248403 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 36
+        10:06:52.289983 IP laptop.41812 > del03s14-in-f4.1e100.net.https: Flags [S],
+        seq 2134581189, win 64240, options [mss 1460,sackOK,TS val 332749028 ecr 0,
+        nop,wscale 7], length 0
+        10:06:52.292514 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 1350
+        10:06:52.292701 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 1350
+        10:06:52.293929 IP laptop.43623 > del03s14-in-f4.1e100.net.443: UDP, length 36
+        ...
 
-2h.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -i eth0 icmp**
+2h. **The different fields of each request and reply for 2h.1.b, 2h.2.b and 2h.3.b**
 
-        The tcpdump command to capture the packets associated with ping.
-        TODO : Explain the different fields of each request and reply.
+        1. Packet arrival time as per local clock
+        2. Internet Protocol - IP for IPv4 and IP6 for IPv6
+        3. Source IP address and port
+        4. TCP flags
+        5. Destination IP address and port
+        6. Destination network layer protocol
+        7. Packet length
 
-2h.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -i eth0 not icmp**
+2h.1.a **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# ping 8.8.8.8**
 
-        The tcpdump command to capture the packets associated with wget.
-        TODO : Explain the different fields of each request and reply.
+        We let ping run in one terminal.
 
-2h.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump 'icmp[icmptype] != icmp-echo and icmp[icmptype] !=icmp-echoreply'**
+2h.1.b **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -i eth0 -s 0 -v icmp**
 
-        The tcpdump command to capture the packets associated with traceroute.
-        TODO : Explain the different fields of each request and reply.
+        We run this tcpdump command to capture the packets associated with ping
+        in a separate terminal and let tcpdump listen to traffic
+        from traceroute. traceroute and ping both use icmp protocol.
 
-2i.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr and dst IP addr**
+        TODO : output
+
+2h.2.a **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# wget https://wordpress.org/latest.zip**
+
+        We let wget run in one terminal.
+
+2h.2.b **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -i eth0 -s 0 -v**
+
+        We run this tcpdump command to capture the packets associated with wget
+        in a separate terminal and let tcpdump listen to traffic
+        from traceroute.
+
+        TODO : output
+
+2h.3.a **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# traceroute www.google.com**
+
+        We let traceroute run in one terminal.
+
+2h.3.b **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -i eth0 -s 0 -v icmp**
+
+        We run this tcpdump command to capture the packets associated with traceroute
+        in a separate terminal and let tcpdump listen to traffic
+        from traceroute. traceroute and ping both use icmp protocol.
+
+        14:52:58.866431 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33476 unreachable, length 36
+        14:52:58.868865 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33475 unreachable, length 36
+        14:52:58.869045 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33472 unreachable, length 36
+        14:52:58.869058 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33470 unreachable, length 36
+        14:52:58.870038 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33478 unreachable, length 36
+        14:52:58.876254 IP del03s06-in-f4.1e100.net > Aspire-E5-575G: ICMP
+        del03s06-in-f4.1e100.net udp port 33469 unreachable, length 36
+
+2i.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src 10.0.2.15 and dst 172.217.161.2 -c 5**
+
+        ...
+        05:24:48.900354 IP 10.0.2.15.47184 > del03s10-in-f2.1e100.net.https: Flags [P.],
+        seq 2280536235:2280536392, ack 3609503, win 64028, length 157
+        05:24:49.004998 IP 10.0.2.15.47184 > del03s10-in-f2.1e100.net.https: Flags [.],
+        ack 215, win 64028, length 0
+        05:24:49.020467 IP 10.0.2.15.47184 > del03s10-in-f2.1e100.net.https: Flags [.],
+        ack 285, win 64028, length 0
+        05:24:49.021118 IP 10.0.2.15.47184 > del03s10-in-f2.1e100.net.https: Flags [P.],
+        seq 157:196, ack 285, win 64028, length 39
+        05:24:49.133872 IP 10.0.2.15.47186 > del03s10-in-f2.1e100.net.https: Flags [.],
+        ack 232, win 64028, length 0
+        ...
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as both source and destination.
 
-2i.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr**
+        TODO : check correctness
+
+2i.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src 10.0.2.15 -c 5**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only source.
 
-2i.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump dst IP addr**
+        TODO : output
+
+2i.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump dst 172.217.161.2 -c 5**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only destination.
 
-2j. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src IP addr and dst IP addr icmp and port 22**
+        TODO : output
 
-       The tcpdump command that captures packets containing ICMP
-       packets between two hosts with different IP addresses.
+2j. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump icmp and src 192.168.43.33 and dst 172.217.27.206**
 
-2k. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump**
+        14:39:39.608857 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 1, length 64
+        14:39:40.610400 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 2, length 64
+        14:39:41.611855 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 3, length 64
+        14:39:42.613228 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 4, length 64
+        14:39:43.614431 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 5, length 64
+        14:39:44.615868 IP home > bom07s15-in-f14.1e100.net: ICMP echo request,
+        id 14744, seq 6, length 64
 
-        TODO : The tcpdump command to capture packets containing SSH request
-               and reply between two specific IP addresses
-               (hint: use port number 22 for SSH)
+        The tcpdump command that captures packets containing ICMP
+        packets between two hosts with different IP addresses.
+
+2k. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump src 10.32.6.42 and dst 10.2.1.40 and port 22 -nn**
+
+        ...
+        14:26:07.482386 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [P.],
+        seq 2685039579:2685039623, ack 2031964935, win 501,
+        options [nop,nop,TS val 1856280474 ecr 1525261534], length 44
+        14:26:07.488906 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [.], ack 45, win 501,
+        options [nop,nop,TS val 1856280480 ecr 1525279262], length 0
+        14:26:08.221618 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [P.], seq 44:80, ack 45,
+        win 501, options [nop,nop,TS val 1856281213 ecr 1525279262], length 36
+        14:26:08.227643 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [.], ack 81, win 501,
+        options [nop,nop,TS val 1856281219 ecr 1525280001], length 0
+        14:26:08.227881 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [.], ack 125, win 501,
+        options [nop,nop,TS val 1856281219 ecr 1525280001], length 0
+        14:26:08.229278 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [.], ack 301, win 501,
+        options [nop,nop,TS val 1856281221 ecr 1525280003], length 0
+        14:26:08.229503 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [P.], seq 80:116, ack 301,
+        win 501, options [nop,nop,TS val 1856281221 ecr 1525280003], length 36
+        14:26:08.229598 IP 10.32.6.42.53284 > 10.2.1.40.22: Flags [FP.], seq 116:176, ack 301,
+        win 501, options [nop,nop,TS val 1856281221 ecr 1525280003], length 60
+        ...
+
+        The tcpdump command to capture packets containing SSH request
+        and reply between two specific IP addresses
+        (using port number 22 for SSH)
