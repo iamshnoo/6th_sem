@@ -119,22 +119,38 @@
         line on each dump line. In the output displayed above, I have only included
         the first colum of the output corresponding to these deltas.
 
-2g. **root@laptop:~# tcpdump host www.google.com -A**
+2g. **root@laptop:~# tcpdump host www.google.com -A -c 5**
 
         www.google.com needs to be opened in the browser window for this
         command to work. We need to run tcpdump first and then browse
-        something on google.com to get network traffic. -a flag ensures output
+        something on google.com to get network traffic. -A flag ensures output
         is in ASCII format.
 
         ...
-        10:06:52.192177 IP laptop.43623 > del03s14-in-f4.1e100.net.443: UDP, length 1350
-        10:06:52.248403 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 36
-        10:06:52.289983 IP laptop.41812 > del03s14-in-f4.1e100.net.https: Flags [S],
-        seq 2134581189, win 64240, options [mss 1460,sackOK,TS val 332749028 ecr 0,
-        nop,wscale 7], length 0
-        10:06:52.292514 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 1350
-        10:06:52.292701 IP del03s14-in-f4.1e100.net.443 > laptop.43623: UDP, length 1350
-        10:06:52.293929 IP laptop.43623 > del03s14-in-f4.1e100.net.443: UDP, length 36
+
+        20:28:40.784103 IP laptop.38450 > del11s05-in-f4.1e100.net.443: UDP,
+        length 724 E.....@.@.G......:.d.2......@...................'......J
+        <u...I..w.......5T.&O........p_.p.....6..}+.2....b...Z...j.V.=i.CU.i.E.0
+        ..Ft#.~.,b.Q..../.3E=.lw.e..:...2....,.s	..KXZ..;M.i.B.P..\:k..+....
+        {g.......$..	v7..N!....k`j..$.RV.0..?h.+.n..........3.^.*...
+        (.W7N...k...a..<G..DC.-.2.#x...f...N..X.~...@K.[.{.z....")..^.......a.z..jo
+        ..<O.X.....R.A.G......}00....%.J.97yx.*..!jaP	}..o..:..L...e..].ucIp;H..
+        F.s#........@F.B.24..v..=Y...;."+.......8L..D.&...R...L.3.&.t=.o=6...h..4M
+        ..:.E...L....e....M.......rh......$.=........../P..0.t...q..Y
+        .p'......c.....f......K|...*....XuY...N.A..C.Q..pm.Q.!E.}.^....
+        [DY,:;.(..b2..B....]6V .Y..V.M.V...(.!.CX[BC....J=..9.......K.;
+        x.....u....X......y.>Y.-N:.gc....S.sR.^.OZ..m..+.)e........2.....c9.
+        O......j.....N.w
+        20:28:40.821607 IP del11s05-in-f4.1e100.net.443 > laptop.38450: UDP,
+        length 21 E..1..@.:....:.d.......2..	.A.....K..^...n..G..^.
+        20:28:40.894790 IP del11s05-in-f4.1e100.net.443 > laptop.38450: UDP,
+        length 59 E..W..@.:....:.d.......2.C..A..H.&.J@.>.
+        \i..&.A`.D.c......,..........0 U...@....BBa`RO.
+        20:28:40.894848 IP del11s05-in-f4.1e100.net.443 > laptop.38450: UDP,
+        length 17 E..-..@.:....:.d.......2....A.........-m8t...
+        20:28:40.903268 IP laptop.38450 > del11s05-in-f4.1e100.net.443: UDP,
+        length 29 E..9..@.@.J......:.d.2...%K.@.........zsA.."n.!...tX..,.8
+
         ...
 
 2h. **The different fields of each request and reply for 2h.1.b, 2h.2.b, 2h.3.b:**
