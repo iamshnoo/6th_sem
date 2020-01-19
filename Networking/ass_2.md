@@ -119,7 +119,7 @@
         line on each dump line. In the output displayed above, I have only included
         the first colum of the output corresponding to these deltas.
 
-2g. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump host www.google.com -A**
+2g. **root@laptop:~# tcpdump host www.google.com -A**
 
         www.google.com needs to be opened in the browser window for this
         command to work. We need to run tcpdump first and then browse
@@ -204,16 +204,16 @@
         from traceroute.
 
         ...
-        13:32:30.316194 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842: Flags [P.],
-        seq 3563088372:3563088480, ack 1172209409, win 501, length 108
-        13:32:30.316247 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842: Flags [P.],
-        seq 108:144, ack 1, win 501, length 36
-        13:32:30.316294 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842: Flags [P.],
-        seq 144:252, ack 1, win 501, length 108
-        13:32:30.316333 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842: Flags [P.],
-        seq 252:288, ack 1, win 501, length 36
-        13:32:30.317360 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842: Flags [P.],
-        seq 288:476, ack 1, win 501, length 188
+        13:32:30.316194 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842:
+        Flags [P.], seq 3563088372:3563088480, ack 1172209409, win 501, length 108
+        13:32:30.316247 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842:
+        Flags [P.], seq 108:144, ack 1, win 501, length 36
+        13:32:30.316294 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842:
+        Flags [P.], seq 144:252, ack 1, win 501, length 108
+        13:32:30.316333 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842:
+        Flags [P.], seq 252:288, ack 1, win 501, length 36
+        13:32:30.317360 IP ubuntu-s-1vcpu-1gb-nyc1-01.ssh > 115.96.128.99.50842:
+        Flags [P.], seq 288:476, ack 1, win 501, length 188
         ...
 
 2h.3.a **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# traceroute www.google.com**
@@ -235,8 +235,8 @@
            1.846 ms *
         7  216.239.62.171 (216.239.62.171)  0.944 ms 216.239.62.169 (216.239.62.169)
            0.925 ms  0.903 ms
-        8  lga34s13-in-f4.1e100.net (172.217.10.36)  0.865 ms 216.239.62.169 (216.239.62.169)
-           0.991 ms lga34s13-in-f4.1e100.net (172.217.10.36)  0.793 ms
+        8  lga34s13-in-f4.1e100.net (172.217.10.36)  0.865 ms 216.239.62.169
+           (216.239.62.169) 0.991 ms lga34s13-in-f4.1e100.net (172.217.10.36)  0.793 ms
 
 2h.3.b **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -n
 'icmp[icmptype] != icmp-echo and icmp[icmptype] !=icmp-echoreply'**
@@ -258,40 +258,126 @@
         time exceeded in-transit, length 68
         ...
 
-2i.1. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -n src 192.168.42.85 and dst 10.2.1.40 and tcp**
+2i.1. **root@laptop:~# tcpdump -c 5 -n src 192.168.42.85 and dst 10.2.1.40 and tcp**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as both source and destination.
 
-        TODO : output
+        ...
+        12:19:00.048184 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718616759
+        ecr 0,nop,wscale 7], length 0
+        12:19:01.072902 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718617784
+        ecr 0,nop,wscale 7], length 0
+        12:19:03.088853 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718619800
+        ecr 0,nop,wscale 7], length 0
+        12:19:07.152860 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718623864
+        ecr 0,nop,wscale 7], length 0
+        12:19:15.344831 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718632057
+        ecr 0,nop,wscale 7], length 0
+        ...
 
-2i.2. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -n src 192.168.42.85 and tcp**
+2i.2. **root@laptop:~# tcpdump -c 5 -n src 192.168.42.85 and tcp**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only source.
 
-        TODO : output
+        ...
+        12:20:05.008881 IP 192.168.42.85.40378 > 10.2.1.40.22: Flags [S], seq
+        1508922276, win 64240, options [mss 1460,sackOK,TS val 2718681726
+        ecr 0,nop,wscale 7], length 0
+        12:20:15.248865 IP 192.168.42.85.45062 > 18.211.35.165.443: Flags
+        [.], ack 891777754, win 501, options [nop,nop,TS val 979285033 ecr
+        119756224], length 0
+        12:20:15.717923 IP 192.168.42.85.40382 > 10.2.1.40.22: Flags [S], seq
+        801386797, win 64240, options [mss 1460,sackOK,TS val 2718692438
+        ecr 0,nop,wscale 7], length 0
+        12:20:16.724833 IP 192.168.42.85.40382 > 10.2.1.40.22: Flags [S], seq
+        801386797, win 64240, options [mss 1460,sackOK,TS val 2718693446
+        ecr 0,nop,wscale 7], length 0
+        12:20:18.736918 IP 192.168.42.85.40382 > 10.2.1.40.22: Flags [S], seq
+        801386797, win 64240, options [mss 1460,sackOK,TS val 2718695458
+        ecr 0,nop,wscale 7], length 0
+        ...
 
-2i.3. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -n dst 10.2.1.40 and tcp**
+2i.3. **root@laptop:~# tcpdump -c 5 -n dst 10.2.1.40 and tcp**
 
         The tcpdump command that captures packets containing TCP
         packets with a specific IP address as only destination.
 
-        TODO : output
+        ...
+        12:20:56.490963 IP 192.168.42.85.40386 > 10.2.1.40.22: Flags [S], seq
+        970139261, win 64240, options [mss 1460,sackOK,TS val 2718733222
+        ecr 0,nop,wscale 7], length 0
+        12:20:57.520853 IP 192.168.42.85.40386 > 10.2.1.40.22: Flags [S], seq
+        970139261, win 64240, options [mss 1460,sackOK,TS val 2718734253
+        ecr 0,nop,wscale 7], length 0
+        12:20:59.536852 IP 192.168.42.85.40386 > 10.2.1.40.22: Flags [S], seq
+        970139261, win 64240, options [mss 1460,sackOK,TS val 2718736269
+        ecr 0,nop,wscale 7], length 0
+        12:21:00.873843 IP 192.168.42.85.40388 > 10.2.1.40.22: Flags [S], seq
+        1753229232, win 64240, options [mss 1460,sackOK,TS val 2718737606
+        ecr 0,nop,wscale 7], length 0
+        12:21:01.904864 IP 192.168.42.85.40388 > 10.2.1.40.22: Flags [S], seq
+        1753229232, win 64240, options [mss 1460,sackOK,TS val 2718738638
+        ecr 0,nop,wscale 7], length 0
+        ...
 
-2j. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -c 5 -n src 192.168.43.33 and
+2j. **root@laptop:~# tcpdump -c 5 -n src 192.168.42.85 and
 dst 172.217.27.206 and icmp**
 
         The tcpdump command that captures packets containing ICMP
         packets between two hosts with different IP addresses.
 
-        TODO : output
+        ...
+        08:53:55.994743 IP 192.168.42.85 > 172.217.167.36: ICMP echo
+        request, id 7275, seq 349, length 64
+        08:53:56.995712 IP 192.168.42.85 > 172.217.167.36: ICMP echo
+        request, id 7275, seq 350, length 64
+        08:53:57.995890 IP 192.168.42.85 > 172.217.167.36: ICMP echo
+        request, id 7275, seq 351, length 64
+        08:53:58.996396 IP 192.168.42.85 > 172.217.167.36: ICMP echo
+        request, id 7275, seq 352, length 64
+        08:53:59.996976 IP 192.168.42.85 > 172.217.167.36: ICMP echo
+        request, id 7275, seq 353, length 64
+        ...
 
-2k. **root@ubuntu-s-1vcpu-1gb-nyc1-01:~# tcpdump -n -c 5 src 192.168.42.85 and dst 10.2.1.40 and
+2k. **root@laptop:~# tcpdump -n -c 5 src 192.168.42.85 and dst 10.2.1.40 and
 port 22**
 
         The tcpdump command to capture packets containing SSH request
         and reply between two specific IP addresses
         (using port number 22 for SSH)
 
-        TODO : output
+        ...
+        08:56:32.904027 IP 192.168.42.85.52642 > 10.2.1.40.22: Flags [S], seq
+        3014443262, win 64240, options [mss 1460,sackOK,TS val 3916743373
+        ecr 0,nop,wscale 7], length 0
+        08:56:33.926133 IP 192.168.42.85.52642 > 10.2.1.40.22: Flags [S], seq
+        3014443262, win 64240, options [mss 1460,sackOK,TS val 3916744395
+        ecr 0,nop,wscale 7], length 0
+        08:56:35.942244 IP 192.168.42.85.52642 > 10.2.1.40.22: Flags [S], seq
+        3014443262, win 64240, options [mss 1460,sackOK,TS val 3916746411
+        ecr 0,nop,wscale 7], length 0
+        08:56:39.974163 IP 192.168.42.85.52642 > 10.2.1.40.22: Flags [S], seq
+        3014443262, win 64240, options [mss 1460,sackOK,TS val 3916750443
+        ecr 0,nop,wscale 7], length 0
+        08:56:48.166248 IP 192.168.42.85.52642 > 10.2.1.40.22: Flags [S], seq
+        3014443262, win 64240, options [mss 1460,sackOK,TS val 3916758635
+        ecr 0,nop,wscale 7], length 0
+        ...
+
+**Note:** _For 2i,2j,2k src IP is 192.168.42.85. It is the IP for 'eno1' for my
+local machine named 'laptop'. dst IP is 10.2.1.40 and it is the IP of the
+'hamsa' server of the department. To generate traffic for 2i and 2j, I use the 'ping' command
+from a separate terminal and for 2k, I 'ssh' into 'hamsa' from a separate terminal. I could not get
+these commands to work for the cloud machine 'ubuntu-s-1vcpu-1gb-nyc1-01' which I have used for
+the rest of the exercises. I also did exercise 2g from the local machine 'laptop' rather than the cloud
+machine._
+
+**Note:** _Throughout the exercises, I have used the ellipses symbol(...) to indicate that
+those portions of the output are not significant or necessary for the demonstration purposes_
