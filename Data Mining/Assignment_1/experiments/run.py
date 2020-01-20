@@ -1,6 +1,7 @@
 import numpy as np
 import sys
 
+
 class Iris:
 
     def __init__(self):
@@ -114,16 +115,16 @@ class Iris:
               str(idx_k) + ", " + str(idx_l) + " are the most similar.")
         print(str(len(clusters)) + " clusters left after this iteration.")
         print("---------------------------------------------------------------")
-        if(len(clusters)==self.k):
+        if(len(clusters) == self.k):
             print(str(len(clusters[0])) + ", " + str(len(clusters[1])) + ", " +
                   str(len(clusters[2])) + " are the sizes of the three clusters.")
-            
+
         return clusters
 
     @classmethod
-    def similarity_measure(cls,num1,num2):
+    def similarity_measure(cls, num1, num2):
         return abs(np.log(num1)-np.log(num2))
-     
+
     def kMeansClustering(self, clusters):
         print("---------------------------------------------------------------")
         print("Now removing duplicates in clusters by re-clustering based on similarity to mean of the clusters formed.")
@@ -133,7 +134,7 @@ class Iris:
             for j in range(len(clusters[i])):
                 sum += clusters[i][j]
             mean.append(sum/len(clusters[i]))
-   
+
         locations = [[] for _ in range(self.m)]
         for i in range(self.m):
             for j in range(len(clusters)):
@@ -144,21 +145,21 @@ class Iris:
 
         dummy = [[] for _ in range(len(clusters))]
         for i in range(self.m):
-            # to suppress warning in similarity function 
+            # to suppress warning in similarity function
             # RuntimeWarning: divide by zero encountered in log
-            if (i==0):
+            if (i == 0):
                 dummy[i].append(i)
             else:
                 obj = i
                 max_similarity = 0
-                max_similarity_idx = -1  
+                max_similarity_idx = -1
                 for j in range(len(locations[i])):
-                    location = locations[i][j]  
-                    for k in range(len(clusters[location])):                  
-                        if (clusters[location][k] == obj):                      
+                    location = locations[i][j]
+                    for k in range(len(clusters[location])):
+                        if (clusters[location][k] == obj):
                             num1 = clusters[location][k]
                             num2 = mean[location]
-                            similarity = Iris.similarity_measure(num1, num2) 
+                            similarity = Iris.similarity_measure(num1, num2)
                             if (similarity > max_similarity):
                                 max_similarity = similarity
                                 max_similarity_idx = location
@@ -179,6 +180,60 @@ class Iris:
         print("\n")
         return clusters
 
+    def notkMeansClustering(self, clusters, data):
+        prob = []
+        for i in range(150):
+            temp = []
+            for j in range(3):
+                temp.append(0)
+            prob.append(temp)
+
+        mean = []
+        for i in range(3):
+            x = len(clusters[i])
+            sumtemp = []
+            for k in range(4):
+                z = 0
+                for j in range(x):
+                    z += data[clusters[i][j]][k]
+                    prob[clusters[i][j]][i] = 1
+                z = z/x
+                sumtemp.append(z)
+            mean.append(sumtemp)
+
+        dummy = [[]for _ in range(3)]
+        for i in range(150):
+            if i == 0:
+                continue
+            len1 = 10000000.0
+            meanind = 0
+            for j in range(3):
+                if(prob[i][j] == 0):
+                    continue
+                else:
+                    tempmean = 0
+                    for k in range(4):
+                        tempmean += (data[i][k]-mean[j][k])**2
+                    tempmean = tempmean**0.5
+                    if len1 > (tempmean):
+                        len1 = tempmean
+                        meanind = j
+            dummy[meanind].append(i)
+        clusters = dummy
+        print(str(len(clusters[0])) + ", " + str(len(clusters[1])) + ", " +
+              str(len(clusters[2])) + " are the sizes of the three final clusters.\n")
+        print("Cluster 1 : \n")
+        print(clusters[0])
+        print("\n")
+        print("Cluster 2 : \n")
+        print(clusters[1])
+        print("\n")
+        print("Cluster 3 : \n")
+        print(clusters[2])
+        print("\n")
+        return clusters
+
+
 if __name__ == "__main__":
     model = Iris()
     data = Iris.getData(model)
@@ -190,5 +245,6 @@ if __name__ == "__main__":
         clusters = Iris.removeSubsetClusters(model, clusters)
         sim = Iris.getSimilarityMatrix(model, clusters)
         clusters = Iris.mergeMaxSimilarityClusters(model, sim, clusters)
-    clusters = Iris.kMeansClustering(model, clusters)
+    # clusters = Iris.kMeansClustering(model, clusters)
+    clusters = Iris.notkMeansClustering(model, clusters, data)
     exit(0)
