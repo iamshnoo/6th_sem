@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   // dynamically create array of character pointers
   char **arr = (char **)malloc(n * sizeof(char *));
 
-  printf("Output of executable 2 : \n");
+  printf("Output of q0_param (passed as argument to execvp in q0) : \n");
   // dynamically allocate memory for each row of above array
   // copy command line arguments one-by-one into each row of array
   // reverse the contents of each row of array
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   int num_processes = 1;
   printf("Process count after exec : ");
   fflush(stdout);
-  system("ps -C --no-headers | wc -l");
+  system("ps --no-headers | wc -l");
   printf("\n");
   return 0;
 }

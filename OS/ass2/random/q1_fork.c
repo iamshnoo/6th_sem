@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
   pid_t pid;
   printf("Number of processes in the system before fork: ");
   fflush(stdout);
-  system("ps -C command_name --no-headers | wc -l");
+  system("ps -C --no-headers | wc -l");
 
   pid = fork();
   if (pid == 0) {

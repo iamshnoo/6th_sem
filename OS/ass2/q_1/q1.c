@@ -11,48 +11,25 @@
  * text-area!
  * **************************************************************/
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#define MAX 100
-int i = 1;
+
 int main(int argc, char *argv[]) {
-  int pid = 0;
-  while (i <= argc-1) {
-
-    if ((pid = fork()) == 0) {
-
-      int j = 0;
-
-      for (j = i + 1; j < argc; j++) {
-
-        if (argv[j][0] != '-') {
-          break;
-        }
-
-        int length = j - i + 1;
-
-        char **arr;
-        arr = malloc(length * sizeof(char *));
-        for (int k = 0; k < length; k++) {
-          arr[k] = malloc(MAX * sizeof(char));
-          // copy the strings to arr
-          for(int l = 0; l < strlen(argv[k]); l++){
-            arr[k][l] = argv[k][l];
-          }
-        }
-
-        execvp(arr[0], arr);
-      }
-
+  pid_t pids[argc];
+  for (int counter = 1; counter < argc; counter++) {
+    fflush(stdout);
+    char *cmd[] = {argv[counter], '\0'};
+    if ((pids[counter] = fork()) == 0) {
+      execvp(cmd[0], cmd);
+      exit(0);
+    } else {
+      wait(NULL);
     }
-    
-    i++;
-  
   }
-
   return 0;
 }
