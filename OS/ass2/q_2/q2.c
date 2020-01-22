@@ -22,9 +22,6 @@
 
 // This function has some implicit functions as listed below.
 // Arguments can have switches starting with '-'
-// If there is a single switch, it works as expected.
-// If there are multiple switches, the switch arguments are combined and treated
-// as a single argument.
 // Clearly, it doesn't cover all possible command line argument options.
 char **process_next_arg(int argc, char *argv[], int current_index) {
   int len = 1;
