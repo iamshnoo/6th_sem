@@ -8,3 +8,12 @@ cmdi will write to the write end of ith pipe and cmd(i + 1) will write to the
 write end of the(i + 1) st pipe and so on. Finally cmdn will print its output to
 the standard output.
 */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) { return EXIT_SUCCESS; }
