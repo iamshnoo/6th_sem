@@ -71,18 +71,14 @@ axs[2].plot([min(C), max(C)], [min(Y_pred), max(Y_pred)],
             color='orange', label='Regression Line')
 '''
 
-A = X_train[:, 0]
 axs[0].scatter(X_train[:, 0], y)
 axs[0].plot(X_train[:, 0], predicted_values,
             color='orange', label='Regression Line')
 
-B = X_train[:, 1]
 axs[1].scatter(X_train[:, 1], y)
 axs[1].plot(X_train[:, 1], predicted_values,
             color='orange', label='Regression Line')
 
-
-C = X_train[:, 2]
 axs[2].scatter(X_train[:, 2], y)
 axs[2].plot(X_train[:, 2], predicted_values,
             color='orange', label='Regression Line')
