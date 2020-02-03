@@ -1,5 +1,8 @@
-import numpy as np
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
+
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def preprocess():
@@ -74,7 +77,11 @@ def plot(x, y, X_train, predicted_values, all_losses):
     axs[0].plot(x, predicted_values, lw=4,
                 c='orange', label='Regression Line')
     axs[1].plot(all_losses, label='Losses')
-    plt.tight_layout()
+    if plt.get_backend().lower() in ['agg', 'macosx']:
+        fig.set_tight_layout(True)
+    else:
+        fig.tight_layout()
+    fig.savefig('simplelinreg.jpg')
     plt.show()
 
 
@@ -85,3 +92,4 @@ if __name__ == "__main__":
     w, all_losses = train(x, y, w, lr, m, epochs, all_losses)
     predicted_values = write_summary(x, y, w)
     plot(x, y, X_train, predicted_values, all_losses)
+    exit()

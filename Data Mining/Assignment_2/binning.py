@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # import the data and normalize it
 # use first column as input data
 # Step 1 : Sort the data
-# Step 2 : Create 30 equidepth bins (Divide range [0,150] into 30 intervals, each containing 5 samples(depth=5))
+# Step 2 : I create 30 equidepth bins (Divide range [0,150] into 30 intervals, each containing 5 samples(depth=5))
 # Step 3 : Fill up bin values by one of three methods - bin means, bin medians, bin boundaries.
 
 
@@ -56,7 +56,7 @@ def bin_boundary(data):
     for i in range(0, 150, 5):
         k = int(i/5)
         for j in range(5):
-            if (data[i+j]-data[i]) < (data[i+4]-data[i+j]):
+            if abs(data[i+j]-data[i]) < abs(data[i+4]-data[i+j]):
                 bucket[k, j] = data[i]
             else:
                 bucket[k, j] = data[i+4]
@@ -72,3 +72,4 @@ if __name__ == "__main__":
     meanBins = bin_mean(data)
     medianBins = bin_median(data)
     boundaryBins = bin_boundary(data)
+    exit()
