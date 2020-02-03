@@ -1,6 +1,6 @@
 {
     "C_Cpp.errorSquiggles": "Disabled",
-    "python.pythonPath": "C:\\Users\\Tutun\\Miniconda3\\envs\\dataMining\\python.exe",
+    "python.pythonPath": "/Users/anjishnu/opt/miniconda3/envs/cvnd/bin/python",
     "files.associations": {
         "stdio.h": "c"
     }
