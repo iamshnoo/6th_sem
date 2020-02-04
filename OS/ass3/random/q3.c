@@ -4,18 +4,18 @@
 #include<sys/wait.h>   
 #include<string.h>
 
-void join_pipe(int* lpipe, int* rpipe, char** arr) {
+void join_pipe(int* left, int* right, char** arr) {
     if(fork()==0) {
-        if(lpipe) {
-		    close(lpipe[1]);
-	        dup2(lpipe[0],STDIN_FILENO);
-	        close(lpipe[0]);  
+        if(left) {
+		    close(left[1]);
+	        dup2(left[0],STDIN_FILENO);
+	        close(left[0]);  
         }
 
-	    if(rpipe) {
-            close(rpipe[0]);
-		    dup2(rpipe[1],STDOUT_FILENO);
-		    close(rpipe[1]);
+	    if(right) {
+            close(right[0]);
+		    dup2(right[1],STDOUT_FILENO);
+		    close(right[1]);
 	    }
 
      	execvp(arr[0],arr);
@@ -64,24 +64,24 @@ int main(int argc, char *argv[]) {
     //	printf("%d\n",x);
 
 	k=0;
-    int lpipe[2], rpipe[2];
+    int left[2], right[2];
 	i=0;
-	pipe(rpipe);
-	join_pipe(NULL, rpipe,cmdlist[i]);
-	lpipe[0] = rpipe[0]; // output pipe becomes input pipe 
-	lpipe[1] = rpipe[1];
+	pipe(right);
+	join_pipe(NULL, right,cmdlist[i]);
+	left[0] = right[0]; // output pipe becomes input pipe 
+	left[1] = right[1];
 	
 	for(i=1;i<x-1;i++) {
 
-	 	pipe(rpipe);
-        join_pipe(lpipe, rpipe,cmdlist[i]);
-        close(lpipe[0]);
-        close(lpipe[1]);
-        lpipe[0] = rpipe[0];
-     	lpipe[1] = rpipe[1];
+	 	pipe(right);
+        join_pipe(left, right,cmdlist[i]);
+        close(left[0]);
+        close(left[1]);
+        left[0] = right[0];
+     	left[1] = right[1];
 	}
 
-	join_pipe(lpipe,NULL,cmdlist[x-1]);
-	close(lpipe[0]);
-	close(lpipe[1]);
+	join_pipe(left,NULL,cmdlist[x-1]);
+	close(left[0]);
+	close(left[1]);
 }

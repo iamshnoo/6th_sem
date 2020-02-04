@@ -16,4 +16,64 @@ the standard output.
 #include <sys/wait.h>
 #include <unistd.h>
 
-int main(int argc, char *argv[]) { return EXIT_SUCCESS; }
+int main(int argc , char *argv[])
+{
+    int pfd[2];
+    int j = 0;
+    int n = argc - 1;
+    pid_t pids[n];
+    pid_t waitRetVal;
+    int pipeRetVal;
+    int status;
+    int prev = 0;
+    int current_pipe = 0;
+
+
+    for(; current_pipe < n; current_pipe++)
+    {
+        // first create a pipe -> will happen n-1 times
+        if(current_pipe != n - 1){
+            pipeRetVal = pipe(pfd);
+            if (pipeRetVal < 0) {
+                printf("Failed to open pipe %d\n", current_pipe);
+                exit(EXIT_FAILURE);
+            }
+        }
+        
+        // now deal with the two ends of the pipe in a forked child process -> happens n times
+        switch (pids[current_pipe] = fork()) {
+            case -1 :   printf("Forking child %d failed.\n", current_pipe);
+                        exit(EXIT_FAILURE);
+                       
+            case 0  :   if(current_pipe != 0) // not leftmost pipe
+                            dup2(prev , STDIN_FILENO);
+            
+                        close(prev);
+                        if(current_pipe != n - 1) // not rightmost pipe
+                            dup2(pfd[1] , STDOUT_FILENO);
+        
+                        close(pfd[1]);
+                        execlp(argv[current_pipe+1] , argv[current_pipe+1] , NULL);
+                        printf("Failed to execute command %s\n", argv[current_pipe+1]);
+                        exit(EXIT_FAILURE);
+
+            default :   prev = pfd[0];
+        }
+
+    }
+
+    // close all loose ends
+    close(prev);
+    close(pfd[0]);
+    close(pfd[1]);
+
+    // kill zombie processes
+    for(; j < n; j++) {
+        waitRetVal = waitpid(pids[j] , &status , 0);
+        if (waitRetVal < 0) {
+            printf("Failed to wait for process %d\n", j);
+            exit(EXIT_FAILURE);
+        }
+    }
+    return 0;
+}
