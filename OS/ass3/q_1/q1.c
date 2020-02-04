@@ -50,9 +50,10 @@ int main(int argc , char *argv[])
             
                         close(prev);
                         if(current_pipe != n - 1) // not rightmost pipe
-                            dup2(pfd[1] , STDOUT_FILENO);
-        
+                            dup2(pfd[1] , STDOUT_FILENO);      
                         close(pfd[1]);
+
+                        // after having dealt with the two ends, now execute the command 
                         execlp(argv[current_pipe+1] , argv[current_pipe+1] , NULL);
                         printf("Failed to execute command %s\n", argv[current_pipe+1]);
                         exit(EXIT_FAILURE);
