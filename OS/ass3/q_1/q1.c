@@ -16,6 +16,11 @@ the standard output.
 #include <sys/wait.h>
 #include <unistd.h>
 
+
+/*******************************
+ * Credits : For some error checking code portions, 
+ * I have used stackoverflow suggestions across multiple answers.
+ * *****************************/
 int main(int argc , char *argv[])
 {
     int pfd[2];
@@ -48,17 +53,17 @@ int main(int argc , char *argv[])
             case 0  :   if(current_pipe != 0) // not leftmost pipe
                             dup2(prev , STDIN_FILENO);
             
-                        close(prev);
                         if(current_pipe != n - 1) // not rightmost pipe
                             dup2(pfd[1] , STDOUT_FILENO);      
-                        close(pfd[1]);
 
                         // after having dealt with the two ends, now execute the command 
                         execlp(argv[current_pipe+1] , argv[current_pipe+1] , NULL);
                         printf("Failed to execute command %s\n", argv[current_pipe+1]);
                         exit(EXIT_FAILURE);
 
-            default :   prev = pfd[0];
+            default :   close(prev);
+                        close(pfd[1]);
+                        prev = pfd[0];
         }
 
     }
