@@ -54,7 +54,9 @@
     between your computer and one of the department servers. What is your observation while
     analysing the application layer data?
 
-    -  Can't do this from home.
+    -  Packets exchanged between the client and server are encrypted using SSHv2 based on 
+       OpenSSH 7.9
+    -  The TLS protocol is used in the application layer.
 
 3d. Enter the URL: <http://gaia.cs.umass.edu/wireshark-labs/INTRO-> wireshark-file1.html and capture packets using Wireshark.
     After your browser has displayed the INTRO-wireshark-file1.html page (it is a simple one line of congratulations), stop Wireshark packet capture. Answer the following from the packets captured:
