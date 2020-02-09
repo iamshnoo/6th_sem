@@ -1,7 +1,9 @@
 {
     "C_Cpp.errorSquiggles": "Disabled",
-    "python.pythonPath": "/Users/anjishnu/opt/miniconda3/envs/cvnd/bin/python",
+    "python.pythonPath": "/Users/anjishnu/anaconda3/envs/ml/bin/python",
     "files.associations": {
         "stdio.h": "c"
-    }
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
