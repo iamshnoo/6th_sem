@@ -81,7 +81,7 @@ def plot(x, y, X_train, predicted_values, all_losses):
         fig.set_tight_layout(True)
     else:
         fig.tight_layout()
-    fig.savefig('simplelinreg.jpg')
+    #fig.savefig('simplelinreg.jpg')
     plt.show()
 
 
