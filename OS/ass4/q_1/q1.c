@@ -29,77 +29,88 @@ both P1 and P2 should terminate and the allocated shared memory should be releas
 #include <signal.h> 
 #include <errno.h> 
 #include <stdlib.h>
+#include <time.h>
 
 int shmid; 
+struct data *shmptr;
+
+struct data {
+        int n;
+        char c;
+};
+
 typedef void (*sighandler_t)(int);
 
-void releaseSHM(int signum) {
-        int status;
+/*fprintf is not async-signal-safe.  See manpage(7) signal-safety.*/
+void releaseSHM() {
+        int status; 
+        shmdt((void*)shmptr);
         status = shmctl(shmid, IPC_RMID, NULL); 
-        if (status == 0) {
-                fprintf(stderr, "Remove shared memory with id = %d.\n", shmid);
-        } else if (status == -1) {
-                fprintf(stderr, "Cannot remove shared memory with id = %d.\n", shmid);
-        } else {
-                fprintf(stderr, "shmctl() returned wrong value while removing shared memory with id = %d.\n", shmid);
-        }
-
         status = kill(0, SIGKILL);
-        if (status == 0) {
-                fprintf(stderr, "kill susccesful.\n"); 
-        } else if (status == -1) {
-                perror("kill failed.\n");
-                fprintf(stderr, "Cannot remove shared memory with id = %d.\n", shmid);
-        } else {
-                fprintf(stderr, "kill(2) returned wrong value.\n");
-        }
-        exit(signum);
+        exit(0);
 }
-                                                                                                                         
-int main() {
+
+int main(int argc, char* argv[]){
         int status;
-        pid_t pid=0;
-        pid_t p1=0;
-        int *n;
-        char *c;
-        int duration = rand() % 3;
-
         sighandler_t shandler;
-        shmid =  shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0777);
+        pid_t pid;
+        int duration;
+        time_t t;
+
+        srand((unsigned) time(&t));
+        duration = rand()%3;
+        shandler = signal(SIGINT, releaseSHM);
+        shmid = shmget(IPC_PRIVATE, sizeof(struct data), IPC_CREAT | 0666);
         if (shmid == -1) { 
-                perror("shmget() failed: ");
-                exit (1);
+                perror("shmget() failed.\n");
+                exit(1);
         }
-
-        while(1){
-            shandler =  signal(SIGINT, releaseSHM); 
-            switch(pid=fork()){
-                case -1 :   perror("fork() failed: ");
-                            exit (1);
-
-                case  0 :   sleep(duration);
-                            if(*c=='n'){
-                                *n = rand()%65536;
-                                printf("Child writes %d in n.\n",*n);
-                                *c = 'y';
-                            }
-                            break;
-
-                default :   n = (int*)shmat(shmid, NULL,0);
-                            c = (char*)shmat(shmid, NULL,0);
-                            *n = -1;
-                            *c = 'n';
-                            if (n == (void *)-1 || c == (void *)-1) { 
-                                perror("shmat() failed at parent: ");
-                                exit (1);
-                            }
-                            sleep(duration);
-                            if(*c=='y'){
-                                printf("Parent reads n as %d.\n",*n);
-                                *c = 'n';
-                            }
-
-            }
+        printf("Parent has received a shared memory of (1 integer, 1 character). \n");
+        sleep(1);
+        shmptr = (struct data*) shmat (shmid, NULL, 0);
+        if((int)shmptr == -1){
+                perror("shmat() failed.\n");
+                exit(1);
         }
-  
+        printf("Parent has attached shared memory to its address space. \n");
+        sleep(1);
+        shmptr->n = -1;
+        shmptr->c = 'n';
+        printf("Parent has written (-1,n) initially to shared memory. \n");
+        printf("Now parent will attempt to fork a child process. \n");
+        sleep(1);
+
+        switch(pid = fork()){
+        case -1 :       perror("fork() failed.\n");
+                        exit(1);
+        
+        case 0  :       printf("Fork was successful.\n");
+                        while(1)
+                        { 
+                                if (shmptr->c == 'n')
+                                {
+                                        printf("Child's sleep-write cycle : ");
+                                        shmptr->n = rand()%1024;
+                                        printf("Child writes %d.\n", shmptr->n);
+                                        shmptr->c = 'y';
+                                }
+                                sleep(duration);      
+                        }
+                        _exit(0);
+        
+        default :       while(1)
+                        {   
+                                if (shmptr->c == 'y')
+                                {
+                                        printf("Parent's sleep-read cycle : ");
+                                        printf("Parent reads %d.\n", shmptr->n);
+                                        shmptr->c = 'n';
+                                }
+                                sleep(duration);       
+                        }
+
+                        wait(&status);
+                        printf("Parent has detected the completion of its child process. \n");
+                        exit(0);
+        }
 }
