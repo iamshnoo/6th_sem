@@ -99,7 +99,7 @@ int main(int argc, char* argv[]){
                 case -1 :       perror("fork() failed.\n");
                                 exit(1);
                 
-                case 0  :       execlp(argv[i+2],argv[i+2],NULL);
+                case 0  :       execlp(argv[2],argv[2],NULL);
                                 exit(1);
                 default :       break;
                 }
