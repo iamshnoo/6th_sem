@@ -58,7 +58,7 @@
 
         - We filter using tcp.port == 80 ( I am trying to get a http page using wget.)
         - Many packets get captured, but only 2 are of interest. (GET/HTTP and HTTP OK)
-        - GET corresponds to sendig the request and OK is the response 
+        - GET corresponds to sending the request and OK is the response 
           on successful completion.
 
 <p align="center">
@@ -98,7 +98,7 @@
         the HTTP OK reply was received?
 
         HTTP GET timestamp - Jan 31, 2020 18:10:56.451051000 IST
-        HTTP OK timestamp - Jan 31, 2020 18:10:56.860242000 IST
+        HTTP OK timestamp  - Jan 31, 2020 18:10:56.860242000 IST
         Time delta - 0.409191000 seconds
 
 <p align="center">
