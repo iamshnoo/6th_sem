@@ -1,5 +1,5 @@
 #include "buffer.h"
-#include "producer.h"
+#include "consumer.h"
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <sys/types.h> 
@@ -15,19 +15,19 @@
 static struct sembuf Pop = {0,-1,SEM_UNDO};
 static struct sembuf Vop = {0, 1,SEM_UNDO};
 
-void producer(int producers, int mutex_id, int full_id, int empty_id, buffer* qp){
+void consumer(int consumers, int mutex_id, int full_id, int empty_id, buffer* qp){
     int i;
     int p;
     while(1)
     {
-        for (i = 0; i<producers; i++)
+        for (i = 0; i<consumers; i++)
         {	
-            wait(empty_id);
+            wait(full_id);
             wait(mutex_id);
-            p = insertbuf(qp);
-            printf("Producer %d : Item produced is %d, front : %d, rear : %d, count : %d\n", i+1, p, qp->front, qp->rear, qp->count);
+            p = deletebuf(qp);
+            printf("Consumer %d : Item consumed is %d, front : %d, rear : %d, count : %d\n", i+1, p, qp->front, qp->rear, qp->count);
             signal(mutex_id);
-            signal(full_id);
+            signal(empty_id);
 
             sleep(1);
         }

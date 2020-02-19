@@ -9,9 +9,8 @@ typedef struct{
 } buffer;
 
 
-void __init__ (buffer *);
-void insertbuf(buffer *, int);
-void deletebuf(buffer *);
-void frontbuf (buffer *, int *);
+buffer* createbuf (int);
+int     insertbuf (buffer *);
+int     deletebuf (buffer *);
 
 #endif
