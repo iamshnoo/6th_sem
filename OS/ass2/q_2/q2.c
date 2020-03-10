@@ -14,6 +14,8 @@
  * Compile : gcc q2.c -o q2
  * Run : ./q2 ./executable1
  * Run : ./q2 ./executable1 ./executable2 -Gopal
+ * Run : ./q2 ./executable2 -Gopal -is -a -good -boy
+ * Run : ./q2 ./executable2 -"Gopal is a good boy"
  * Run : ./q2 ls -l ps -ef
  * **************************************************************/
 
@@ -36,6 +38,9 @@ char **process_next_arg(int argc, char *argv[], int current_index) {
   for (; i < argc; i++, len++) {
     if (argv[i][0] != '-') {
       break;
+    }
+    if (argv[i][0] == '-'){
+      argv[i][0] = ' ';
     }
   }
 

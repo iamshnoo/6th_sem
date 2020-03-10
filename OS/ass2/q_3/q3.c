@@ -51,6 +51,9 @@ char **process_next_arg(int argc, char *argv[], int current_index) {
     if (argv[i][0] != '-') {
       break;
     }
+    if (argv[i][0] == '-'){
+      argv[i][0] = ' ';
+    }
   }
 
   cmd = (char **)malloc(sizeof(char *) * len + 1);
