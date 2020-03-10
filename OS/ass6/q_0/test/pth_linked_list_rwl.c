@@ -1,13 +1,13 @@
 /* File:     pth_linked_list_rwl.c
  *
- * Purpose:  Implement a multi-threaded sorted linked list of 
- *           ints with ops insert, print, member, delete, free list.  
+ * Purpose:  Implement a multi-threaded sorted linked list of
+ *           ints with ops insert, print, member, delete, free list.
  *           This version uses read-write locks
- * 
+ *
  * Compile:  gcc -g -Wall -o pth_linked_list_rwl pth_linked_list_rwl.c my_rand.c -lpthread
  * Run:    ./pth_linked_list_rwl <thread_count>
  * Input:    total number of keys inserted by main thread
- *           total number of ops 
+ *           total number of ops
  *           percent of ops that are search, insert (remainder are delete)
  * Output:   Elapsed time to carry out the ops
  *
@@ -37,7 +37,7 @@ struct list_node_s {
 };
 
 /* Shared variables */
-struct      list_node_s* head = NULL;  
+struct      list_node_s* head = NULL;
 int         thread_count;
 int         total_ops;
 double      insert_percent;
@@ -64,7 +64,7 @@ int         Is_empty(void);
 
 /*-----------------------------------------------------------------*/
 int main(int argc, char* argv[]) {
-   long i; 
+   long i;
    int key, success, attempts;
    pthread_t* thread_handles;
    int inserts_in_main;
@@ -153,7 +153,7 @@ int Insert(int value) {
    struct list_node_s* pred = NULL;
    struct list_node_s* temp;
    int rv = 1;
-   
+
    while (curr != NULL && curr->data < value) {
       pred = curr;
       curr = curr->next;
@@ -223,7 +223,7 @@ int Delete(int value) {
       pred = curr;
       curr = curr->next;
    }
-   
+
    if (curr != NULL && curr->data == value) {
       if (pred == NULL) { /* first element in list */
          head = curr->next;
@@ -231,7 +231,7 @@ int Delete(int value) {
          printf("Freeing %d\n", value);
 #        endif
          free(curr);
-      } else { 
+      } else {
          pred->next = curr->next;
 #        ifdef DEBUG
          printf("Freeing %d\n", value);
@@ -251,7 +251,7 @@ void Free_list(void) {
    struct list_node_s* following;
 
    if (Is_empty()) return;
-   current = head; 
+   current = head;
    following = current->next;
    while (following != NULL) {
 #     ifdef DEBUG

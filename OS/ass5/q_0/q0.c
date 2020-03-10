@@ -1,14 +1,14 @@
 /*****************************************************************
- * There is a fixed size buffer and there are two types of processes;  
- * producer process and consumer processes. The producer processes produce 
- * items and enters them into the buffer and the consumer processes remove 
+ * There is a fixed size buffer and there are two types of processes;
+ * producer process and consumer processes. The producer processes produce
+ * items and enters them into the buffer and the consumer processes remove
  * the items from the buffer and consume them.
  *
- * A producer should not produce items into the buffer when the consumer 
- * is consuming an item from the buffer and vice versa. 
- * So the buffer should only be accessed by the producer or consumer at a time. 
- * The producer processes should also stop producing items if the buffer is 
- * full and the consumer process stops consuming items if the buffer is empty. 
+ * A producer should not produce items into the buffer when the consumer
+ * is consuming an item from the buffer and vice versa.
+ * So the buffer should only be accessed by the producer or consumer at a time.
+ * The producer processes should also stop producing items if the buffer is
+ * full and the consumer process stops consuming items if the buffer is empty.
  * Write a program to achieve the above-mentioned synchronization using semaphore.
  *
  * Your program should be well indented and documented.
@@ -24,19 +24,19 @@
  * ./q0 2 3 5 will give 2 producers, 3 consumers and a buffer size of 5.
  * Max buffer size is limited to 5.
  * Hit Ctrl+C to kill all processes and remove all semaphores and shared memory.
- * Remember to change the filepath specified in ftok() calls before compiling on 
+ * Remember to change the filepath specified in ftok() calls before compiling on
  * a different system.
 */
 
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <sys/types.h> 
-#include <sys/ipc.h> 
-#include <sys/shm.h> 
-#include <sys/wait.h> 
-#include <unistd.h> 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <sys/sem.h>
-#include <signal.h> 
+#include <signal.h>
 
 #define NO_SEM	1
 #define wait(s) semop(s, &Pop, 1);   // wait operation
@@ -57,7 +57,7 @@ typedef void (*sighandler_t)(int);
 
 void cleanup() {
 
-    int status; 
+    int status;
     key_t key;
     int id;
     union semun arg;
@@ -144,7 +144,7 @@ int main(int argc, char* argv[])
 		while(1)
 		{
 			for (i = 0; i<producers; i++)
-			{	
+			{
 				wait(empty_id);
 				wait(mutex_id);
                 p = rand()%1024;

@@ -9,7 +9,7 @@
  * the standard output.
  * -------------------------------------------------------------
  * Compile : gcc q1b.c -o outq1b
- * Run : ./outq1b ls wc 
+ * Run : ./outq1b ls wc
  ******************************************************************/
 
 #include <stdio.h>
@@ -20,10 +20,10 @@
 #include <unistd.h>
 
 /*******************************
- * Credits : For some error checking code portions, 
+ * Credits : For some error checking code portions,
  * I have used stackoverflow suggestions across multiple answers.
- * *****************************/ 
-int main(int argc, char *argv[]) { 
+ * *****************************/
+int main(int argc, char *argv[]) {
 
     int lpipe[2], rpipe[2];
     int i,j;
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
             case -1 :   printf("Forking child 1 failed.\n");
                         exit(EXIT_FAILURE);
 
-            
+
             case 0  :   close(rpipe[0]);
                         dup2(rpipe[1],STDOUT_FILENO);
                         close(rpipe[1]);
@@ -51,11 +51,11 @@ int main(int argc, char *argv[]) {
                         printf("Failed to execute command %s\n", argv[1]);
                         exit(EXIT_FAILURE);
 
-            default :   lpipe[0] = rpipe[0];  
+            default :   lpipe[0] = rpipe[0];
                         lpipe[1] = rpipe[1];
-    
+
     }
-    
+
     // all the n-2 pipes inbetween
     for(i=2;i<n-1;i++) {
 
@@ -69,10 +69,10 @@ int main(int argc, char *argv[]) {
             case -1 :   printf("Forking child %d failed.\n",i);
                         exit(EXIT_FAILURE);
 
-            
+
             case 0  :   close(lpipe[1]);
                         dup2(lpipe[0],STDIN_FILENO);
-                        close(lpipe[0]);  
+                        close(lpipe[0]);
                         close(rpipe[0]);
                         dup2(rpipe[1],STDOUT_FILENO);
                         close(rpipe[1]);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[]) {
                         close(lpipe[1]);
                         lpipe[0] = rpipe[0];
                         lpipe[1] = rpipe[1];
-    
+
         }
 
     }
@@ -94,10 +94,10 @@ int main(int argc, char *argv[]) {
             case -1 :   printf("Forking child n failed.\n");
                         exit(EXIT_FAILURE);
 
-            
+
             case 0  :   close(lpipe[1]);
                         dup2(lpipe[0],STDIN_FILENO);
-                        close(lpipe[0]);         
+                        close(lpipe[0]);
                         execlp(argv[n-1] , argv[n-1] , NULL);
                         printf("Failed to execute command %s\n", argv[n-1]);
                         exit(EXIT_FAILURE);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
                         close(rpipe[0]);
                         close(rpipe[1]);
                         wait(0);
-    
+
     }
 
     return 0;

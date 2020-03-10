@@ -16,8 +16,8 @@
     outputs an STS-3 frame (byte by byte) by writing it to standard output. Use pipes for
     communication STS and the multiplexer processes.</i></p>
 
-    I have implemented the solution in Python using only in-built libraries 
-    for system calls and random number generation purposes. A sample output 
+    I have implemented the solution in Python using only in-built libraries
+    for system calls and random number generation purposes. A sample output
     for a reduced number of input bytes to each source is given below.
 
 <p align="center">
@@ -36,8 +36,8 @@
     corrupted, change one or more bytes. The third function again computes the checksum
     and decides if the data is to be accepted or discarded. </i></p>
 
-    I have implemented the solution in Python using only in-built libraries 
-    for system calls and random number generation purposes. A sample output 
+    I have implemented the solution in Python using only in-built libraries
+    for system calls and random number generation purposes. A sample output
     for a reduced number of input bytes to each source is given below.
 
 <p align="center">

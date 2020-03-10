@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include "my_rand.h"
 
-#define MR_MULTIPLIER 279470273 
+#define MR_MULTIPLIER 279470273
 #define MR_INCREMENT 0
 #define MR_MODULUS 4294967291U
 #define MR_DIVISOR ((double) 4294967291U)
@@ -25,7 +25,7 @@
 
 #ifdef _MAIN_
 int main(void) {
-   int n, i; 
+   int n, i;
    unsigned seed = 1, x;
    double y;
 
@@ -50,15 +50,15 @@ int main(void) {
  * Return value:  A new pseudo-random unsigned int in the range
  *                0 - MR_MODULUS
  *
- * Notes:  
- * 1.  This is a slightly modified version of the generator in the 
+ * Notes:
+ * 1.  This is a slightly modified version of the generator in the
  *     Wikipedia article "Linear congruential generator"
  * 2.  The seed_p argument stores the "state" for the next call to
  *     the function.
  */
 unsigned my_rand(unsigned* seed_p) {
    long long z = *seed_p;
-   z *= MR_MULTIPLIER; 
+   z *= MR_MULTIPLIER;
 // z += MR_INCREMENT;
    z %= MR_MODULUS;
    *seed_p = z;

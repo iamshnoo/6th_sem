@@ -5,10 +5,10 @@
  * creates n additional child processes Pi (i= 1 to n),
  * such that each Pi prints reverse of string Si,
  * where the program is executed as ./a.out S1 S2 ... Sn.
- * 
+ *
  * Compile : gcc q2.c -o q2
  * Run : ./q2 Gopal is a good boy
- * Output : lapoG si a doog yob 
+ * Output : lapoG si a doog yob
  * **************************************************************/
 
 #include <stdio.h>

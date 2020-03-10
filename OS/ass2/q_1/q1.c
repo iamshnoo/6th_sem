@@ -12,7 +12,7 @@
  * ---------------------------------------------------------------
  * Compile : gcc q1.c -o q1
  * Run : ./q1 ./executable1 ./executable1 ./executable1
- * Run : ./q1 ./executable1 
+ * Run : ./q1 ./executable1
  * Run : ./q1 ./abc.txt
  * **************************************************************/
 

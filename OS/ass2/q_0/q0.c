@@ -8,17 +8,17 @@
  * ------------------------------------------------------------------
  * File test.c has been executed to produce the executable binary q0_param,
  * which is used in this file on line 38. (gcc test.c -o q0_param)
- * 
+ *
  * Compile : gcc q0.c -o q0_output
  * Run : ./q0_output
  * Sample  output :
  * Number of processes before fork call:        5
  * Number of processes after fork call:        6
  * Number of processes before execvp system call:        5
- * Output of q0_param (passed as argument to execvp in q0) : 
- * yob doog a si lapoG 
+ * Output of q0_param (passed as argument to execvp in q0) :
+ * yob doog a si lapoG
  * Process count after exec :        5
- * 
+ *
  * **************************************************************/
 #include <stdio.h>
 #include <stdlib.h>

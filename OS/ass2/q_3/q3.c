@@ -20,9 +20,9 @@
  * the given text-area!
  * ---------------------------------------------------------------
  * Compile : gcc q3.c -o q3
- * Run : ./q3 ./executable1 
+ * Run : ./q3 ./executable1
  * Run : ./q3 ls ps
- * 
+ *
  * The following two runs think the flag is a separate argument
  * and thus produces an output saying that they failed to execute.
  * Run : ./q3 ./executable1 ./executable2 -Gopal

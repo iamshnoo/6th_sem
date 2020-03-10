@@ -9,7 +9,7 @@
  * the standard output.
  * -------------------------------------------------------------
  * Compile : gcc q1a.c -o outq1a
- * Run : ./outq1a ls wc 
+ * Run : ./outq1a ls wc
  ******************************************************************/
 
 #include <stdio.h>
@@ -21,7 +21,7 @@
 
 
 /*******************************
- * Credits : For some error checking code portions, 
+ * Credits : For some error checking code portions,
  * I have used stackoverflow suggestions across multiple answers.
  * *****************************/
 int main(int argc , char *argv[])
@@ -47,19 +47,19 @@ int main(int argc , char *argv[])
                 exit(EXIT_FAILURE);
             }
         }
-        
+
         // now deal with the two ends of the pipe in a forked child process -> happens n times
         switch (pids[current_pipe] = fork()) {
             case -1 :   printf("Forking child %d failed.\n", current_pipe);
                         exit(EXIT_FAILURE);
-                       
+
             case 0  :   if(current_pipe != 0) // not leftmost pipe
                             dup2(prev , STDIN_FILENO);
-            
-                        if(current_pipe != n - 1) // not rightmost pipe
-                            dup2(pfd[1] , STDOUT_FILENO);      
 
-                        // after having dealt with the two ends, now execute the command 
+                        if(current_pipe != n - 1) // not rightmost pipe
+                            dup2(pfd[1] , STDOUT_FILENO);
+
+                        // after having dealt with the two ends, now execute the command
                         execlp(argv[current_pipe+1] , argv[current_pipe+1] , NULL);
                         printf("Failed to execute command %s\n", argv[current_pipe+1]);
                         exit(EXIT_FAILURE);

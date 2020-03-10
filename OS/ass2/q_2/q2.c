@@ -12,7 +12,7 @@
  * process executes the command "ls -" and the second one executes "ps -ef".!
  * ---------------------------------------------------------------
  * Compile : gcc q2.c -o q2
- * Run : ./q2 ./executable1 
+ * Run : ./q2 ./executable1
  * Run : ./q2 ./executable1 ./executable2 -Gopal
  * Run : ./q2 ls -l ps -ef
  * **************************************************************/

@@ -1,15 +1,15 @@
 #include <stdio.h>
-#include <unistd.h> 
-#include <sys/wait.h> 
-#include <sys/types.h> 
-#include <sys/ipc.h> 
-#include <sys/shm.h> 
-#include <signal.h> 
-#include <errno.h> 
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <signal.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <time.h>
 
-int shmid; 
+int shmid;
 struct data *shmptr;
 
 struct data {
@@ -22,9 +22,9 @@ typedef void (*sighandler_t)(int);
 
 /* fprintf is not async-signal-safe.  See manpage(7) signal-safety. */
 void releaseSHM() {
-        int status; 
+        int status;
         shmdt((void*)shmptr);
-        status = shmctl(shmid, IPC_RMID, NULL); 
+        status = shmctl(shmid, IPC_RMID, NULL);
         status = kill(0, SIGKILL);
         exit(0);
 }
@@ -39,11 +39,11 @@ int main()
 
     srand((unsigned) time(&t));
     duration = rand()%3;
-    
+
     shandler = signal(SIGINT, releaseSHM);
     key = ftok("shmq3",65);
     shmid = shmget(key, sizeof(struct data), IPC_CREAT | 0666);
-    if (shmid == -1) { 
+    if (shmid == -1) {
             perror("shmget() failed.\n");
             exit(1);
     }
@@ -68,8 +68,8 @@ int main()
                 printf("Child [PID : %d] writes %d.\n", shmptr->pid, shmptr->n);
                 shmptr->c = 'y';
         }
-        sleep(duration);      
+        sleep(duration);
     }
-    
+
     exit(0);
 }

@@ -6,7 +6,7 @@ import string
 def id_generator(size=10, chars=string.ascii_uppercase + string.digits):
     string = ''.join(random.choice(chars) for _ in range(size))
     bytestring = string.encode()
-    return bytestring 
+    return bytestring
 
 def generate_input():
     input1 = id_generator()
@@ -16,8 +16,8 @@ def generate_input():
     f1 = open('/Users/anjishnu/Documents/GitHub/6th_sem/Networking/ass4/inp1', 'wb')
     f2 = open('/Users/anjishnu/Documents/GitHub/6th_sem/Networking/ass4/inp2', 'wb')
     f3 = open('/Users/anjishnu/Documents/GitHub/6th_sem/Networking/ass4/inp3', 'wb')
-    f1.write(input1)  
-    f2.write(input2) 
+    f1.write(input1)
+    f2.write(input2)
     f3.write(input3)
 
     f1.close()
@@ -30,7 +30,7 @@ def IPC_init():
     r1,w1 = os.pipe()
     r2,w2 = os.pipe()
     r3,w3 = os.pipe()
-    
+
     return r1,r2,r3,w1,w2,w3
 
 def STS_1_Tributary(pipein, pipeout,i):
@@ -45,7 +45,7 @@ def STS_1_Tributary(pipein, pipeout,i):
     os.close(pipein)
     os.write(pipeout,data)
     A = data.decode('utf-8').strip()
-    print("Input text :", A)  
+    print("Input text :", A)
     f.close()
     return
 
@@ -92,7 +92,7 @@ def work():
     pid1 = os.fork()
     if pid1 == 0:
         STS_1_Tributary(r1, w1, 1)
-    
+
     else:
         pid2 = os.fork()
         if pid2 == 0:
@@ -102,7 +102,7 @@ def work():
             pid3 = os.fork()
             if pid3 == 0:
                 STS_1_Tributary(r3, w3, 3)
-            
+
             else:
                 pid4 = os.fork()
                 if pid4 == 0:

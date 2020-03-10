@@ -4,7 +4,7 @@ import string
 
 def generate_data():
     string = 'Networking'
-    payload = string.encode() 
+    payload = string.encode()
     f = open('/Users/anjishnu/Documents/GitHub/6th_sem/Networking/ass4/inp4', 'wb')
     f.write(payload)
     f.close()
@@ -14,7 +14,7 @@ def read_data():
     f1 = open('/Users/anjishnu/Documents/GitHub/6th_sem/Networking/ass4/inp4', 'rb')
     data = f1.read()
     A = data.decode('utf-8').strip()
-    print("Input text :", A)  
+    print("Input text :", A)
     f1.close()
     return data
 
@@ -44,7 +44,7 @@ def message(payload, checksum):
             message.append(checksum)
         else:
             message.append(payload[i])
-    
+
     print(message)
     return
 
@@ -55,7 +55,7 @@ def checksum_receiver(payload, checksum):
             sum += checksum
         else:
             sum += payload[i]
-    
+
     sum = ~sum
     print(sum)
 
@@ -82,7 +82,7 @@ def corrupted_message(payload,checksum):
 def transmission(payload,checksum):
     corrupted = coinToss()
     if corrupted==0:
-        
+
         print("--------------")
 
         print("Message transmitted : ")
@@ -115,4 +115,3 @@ if __name__ == "__main__":
     payload = read_data()
     initial_checksum = calculate_checksum(payload)
     transmission(payload,initial_checksum)
-    

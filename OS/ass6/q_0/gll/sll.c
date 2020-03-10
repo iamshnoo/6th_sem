@@ -21,7 +21,7 @@ int main()
 
     printf("Testing isPresentGLL().\n");
 
-    x = isPresentGLL(gll1,&c); 
+    x = isPresentGLL(gll1,&c);
     printf("Position %d present\n",x);
 
     y = isPresentGLL(gll1,&d);
@@ -34,7 +34,7 @@ int main()
 
     k = deleteNodeGLL(gll1,&e);
     printf("position %d deleted\n",k);
-    printf("Because of deletion of element 100, isPresentGLL(gll1,100) is false. \n"); 
+    printf("Because of deletion of element 100, isPresentGLL(gll1,100) is false. \n");
 
     K = isPresentGLL(gll1,&e);
     (void)K;//to remove unused variable warning.
@@ -45,32 +45,32 @@ int main()
     (void)m;//to remove unused variable warning.
     printf("getNodeDataGLL() gives %d from position 2\n",g);
     printf("...........................\n");
-   
+
     //...................................................................................//
 
     printf("Testing addNodeGLLSorted().\n");
     printf("...........................\n");
 
-    
+
     sizeA = sizeof(A)/sizeof(A[0]);
     gll_int = createGLL( sizeof(int) ,  (int (*)(void*,void*))intCompare );
-    
+
     for(int i = 0;i<sizeA;i++)
     {
-        addNodeGLLSorted(gll_int,&A[i]);  
+        addNodeGLLSorted(gll_int,&A[i]);
     }
-    printf("Sorted Integer linked list :\n"); 
+    printf("Sorted Integer linked list :\n");
     printLL_int(gll_int);
     printf("..................................\n");
 
-    
+
     sizeB = sizeof(B)/sizeof(B[0]);
     gll_char = createGLL( sizeof(char) ,  (int (*)(void*,void*))strcmp );
-    
+
     for(int i = 0;i<sizeB;i++)
     {
         addNodeGLLSorted(gll_char,&B[i]);
-    }  
+    }
     printf("Sorted Character linked list :\n");
     printLL_char(gll_char);
     printf("................................\n");
@@ -87,15 +87,15 @@ int main()
     printf("................................\n");
 
 
-    printf("Sorted floating point numbers linked list :\n"); 
+    printf("Sorted floating point numbers linked list :\n");
     sizeD = sizeof(D)/sizeof(D[0]);
     gll_float =  createGLL( sizeof(float),  floatCompare );
-    
+
     for(int i = 0;i<sizeD;i++)
     {
         addNodeGLLSorted(gll_float,&D[i]);
-    }  
-   
+    }
+
     printLL_float(gll_float);
     printf("..................................\n");
 
