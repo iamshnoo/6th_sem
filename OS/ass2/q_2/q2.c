@@ -10,6 +10,11 @@
  * executables. Extend the  assignment so that this can be done now. That is the
  * program now can be called as "./a.out ls -l ps -ef" such that 1st child
  * process executes the command "ls -" and the second one executes "ps -ef".!
+ * ---------------------------------------------------------------
+ * Compile : gcc q2.c -o q2
+ * Run : ./q2 ./executable1 
+ * Run : ./q2 ./executable1 ./executable2 -Gopal
+ * Run : ./q2 ls -l ps -ef
  * **************************************************************/
 
 #include <errno.h>
@@ -20,7 +25,7 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-// This function has some implicit functions as listed below.
+// This function has some implicit issues as listed below.
 // Arguments can have switches starting with '-'
 // Clearly, it doesn't cover all possible command line argument options.
 char **process_next_arg(int argc, char *argv[], int current_index) {
@@ -37,7 +42,7 @@ char **process_next_arg(int argc, char *argv[], int current_index) {
   cmd = (char **)malloc(sizeof(char *) * len + 1);
   for (; j <= len; j++) {
     if (j == len)
-      cmd[j] = '\0';
+      cmd[j] = NULL;
     else
       cmd[j] = argv[j + current_index];
   }

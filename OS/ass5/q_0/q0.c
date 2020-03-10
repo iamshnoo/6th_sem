@@ -1,75 +1,136 @@
+/*****************************************************************
+ * There is a fixed size buffer and there are two types of processes;  
+ * producer process and consumer processes. The producer processes produce 
+ * items and enters them into the buffer and the consumer processes remove 
+ * the items from the buffer and consume them.
+ *
+ * A producer should not produce items into the buffer when the consumer 
+ * is consuming an item from the buffer and vice versa. 
+ * So the buffer should only be accessed by the producer or consumer at a time. 
+ * The producer processes should also stop producing items if the buffer is 
+ * full and the consumer process stops consuming items if the buffer is empty. 
+ * Write a program to achieve the above-mentioned synchronization using semaphore.
+ *
+ * Your program should be well indented and documented.
+ * -------------------------------------------------------------
+ * Compile : gcc q0.c -o q0
+ * Run : ./q0 2 3 5
+ *****************************************************************/
+
 /*
-There is a fixed size buffer and there are two types of processes;  
-producer process and consumer processes. The producer processes produce 
-items and enters them into the buffer and the consumer processes remove 
-the items from the buffer and consume them.
-
-A producer should not produce items into the buffer when the consumer 
-is consuming an item from the buffer and vice versa. 
-So the buffer should only be accessed by the producer or consumer at a time. 
-The producer processes should also stop producing items if the buffer is 
-full and the consumer process stops consuming items if the buffer is empty. 
-Write a program to achieve the above-mentioned synchronization using semaphore.
-
-Your program should be well indented and documented.
+ * Instructions for running file :
+ * -------------------------------
+ * gcc q0.c -o q0
+ * ./q0 2 3 5 will give 2 producers, 3 consumers and a buffer size of 5.
+ * Max buffer size is limited to 5.
+ * Hit Ctrl+C to kill all processes and remove all semaphores and shared memory.
+ * Remember to change the filepath specified in ftok() calls before compiling on 
+ * a different system.
 */
 
-#include <stdio.h>
-#include <sys/types.h> /* for semget(2) ftok(3) semop(2) semctl(2) */
-#include <sys/ipc.h>   /* for semget(2) ftok(3) semop(2) semctl(2) */
-#include <sys/sem.h>   /* for semget(2) semop(2) semctl(2) */
-#include <unistd.h>    /* for fork(2) */
-#include <stdlib.h>    /* for exit(3) */
-#include <semaphore.h>
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <sys/types.h> 
+#include <sys/ipc.h> 
+#include <sys/shm.h> 
+#include <sys/wait.h> 
+#include <unistd.h> 
+#include <sys/sem.h>
+#include <signal.h> 
 
 #define NO_SEM	1
 #define wait(s) semop(s, &Pop, 1);   // wait operation
-#define signal(s) semop(s, &Vop, 1); // signal operation
+#define sig(s) semop(s, &Vop, 1); // signal operation
+#define MAX 5
 
 static struct sembuf Pop = {0,-1,SEM_UNDO};
 static struct sembuf Vop = {0, 1,SEM_UNDO};
 
-int *buffer; //Defining the buffer
+typedef struct{
+    int data[MAX];
+    int front, rear, count;
+} buffer;
 
-void createBuffer(int size)
-{
-	buffer = (int*)malloc(size*sizeof(int));
+buffer *qp;
+
+typedef void (*sighandler_t)(int);
+
+void cleanup() {
+
+    int status; 
+    key_t key;
+    int id;
+    union semun arg;
+
+    key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 1);
+    id = shmget(key, sizeof(buffer), IPC_CREAT | 0777);
+    shmdt((void*)qp);
+    status = shmctl(id, IPC_RMID, NULL);
+
+    key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 2);
+    id = semget(key, NO_SEM, IPC_CREAT | 0777);
+    status = semctl(id, 0, IPC_RMID, arg);
+
+    key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 3);
+    id = semget(key, NO_SEM, IPC_CREAT | 0777);
+    status = semctl(id, 0, IPC_RMID, arg);
+
+    key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 4);
+    id = semget(key, NO_SEM, IPC_CREAT | 0777);
+    status = semctl(id, 0, IPC_RMID, arg);
+
+    status = kill(0, SIGKILL);
+
+    exit(0);
 }
 
 
 int main(int argc, char* argv[])
 {
-	int status;
     int producers = atoi(argv[1]);
 	int consumers = atoi(argv[2]);
-    int size = atoi(argv[3]);
+    int size;
+	int status;
     key_t mutex_key;
     int mutex_id;
     key_t full_key;
     int full_id;
     key_t empty_key;
     int empty_id;
-    int in = -1;
-	int out = -1;
     pid_t pid;
+    key_t buf_key;
+    buffer *qp;
+    int shmID;
+    sighandler_t shandler;
+    union semun setvalArg;
 
-	union semun
-	{
-		int              val;    /* Value for SETVAL */
-		struct semid_ds *buf;    /* Buffer for IPC_STAT, IPC_SET */
-		unsigned short  *array;  /* Array for GETALL, SETALL */
-		struct seminfo  *__buf;  /* Buffer for IPC_INFO (Linux-specific) */
-	} setvalArg;
+    size = atoi(argv[3]);
+    if(size > MAX){
+        size = MAX;
+    }
 
-	createBuffer(size);
-	mutex_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 3);
+    shandler = signal(SIGINT, cleanup);
+    buf_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 1);
+    shmID = shmget(buf_key, sizeof(buffer), IPC_CREAT | 0777);
+    qp = (buffer*) shmat(shmID, 0, 777);
+    int i;
+    for (i=0; i<size; i++){
+        qp->data[i] = 0x00;
+    }
+    qp->front = 0;
+    qp->rear = -1;
+    qp->count = 0;
+
+	mutex_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 2);
 	mutex_id = semget(mutex_key, NO_SEM, IPC_CREAT | 0777);
 	setvalArg.val = 1;
     status = semctl(mutex_id, 0, SETVAL, setvalArg); // mutex = 1
-    full_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 2);
+
+    full_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 3);
     full_id = semget(full_key, NO_SEM, IPC_CREAT | 0777);
 	setvalArg.val = 0;
     status = semctl(full_id, 0, SETVAL, setvalArg);  // full = 0
+
     empty_key = ftok("/Users/anjishnu/Documents/GitHub/6th_sem/OS/ass5/q_0/q0.c", 4);
     empty_id = semget(empty_key, NO_SEM, IPC_CREAT | 0777);
 	setvalArg.val = size;
@@ -79,17 +140,20 @@ int main(int argc, char* argv[])
 	if(pid == 0)
 	{
 		int i;
+        int p;
 		while(1)
 		{
 			for (i = 0; i<producers; i++)
 			{	
 				wait(empty_id);
 				wait(mutex_id);
-				in = (in + 1)%size;
-				buffer[in] = in + 1;
-				printf("Producer %d : Item %d produced\n", i+1, in + 1);
-				signal(mutex_id);
-				signal(full_id);
+                p = rand()%1024;
+                qp->rear = (qp->rear+1)%size;
+                qp->data[qp->rear] = p;
+                qp->count += 1;
+				printf("Producer %d : Item produced is %d, front : %d, rear : %d, count : %d\n", i+1, p, qp->front, qp->rear, qp->count);
+				sig(mutex_id);
+				sig(full_id);
 
 				sleep(1);
 			}
@@ -99,16 +163,19 @@ int main(int argc, char* argv[])
 	else
 	{
 		int i;
+        int p;
 		while(1)
 		{
 			for (i = 0; i<consumers; i++)
 			{
 				wait(full_id);
 				wait(mutex_id);
-				out = (out + 1)%size;
-				printf("Consumer %d : Item %d consumed\n", i + 1, out + 1);
-				signal(mutex_id);
-				signal(empty_id);
+                p = qp->data[qp->front];
+				qp->front = (qp->front + 1)%size;
+                qp->count -= 1;
+				printf("Consumer %d : Item consumed is %d, front : %d, rear : %d, count : %d\n", i + 1, p, qp->front, qp->rear, qp->count);
+				sig(mutex_id);
+				sig(empty_id);
 
 				sleep(2);
 			}

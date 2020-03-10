@@ -18,7 +18,15 @@
  * Explore that when a child process terminates abnormally what can be reflected
  * to the parent process. Write your observation and justification for this in
  * the given text-area!
- *
+ * ---------------------------------------------------------------
+ * Compile : gcc q3.c -o q3
+ * Run : ./q3 ./executable1 
+ * Run : ./q3 ls ps
+ * 
+ * The following two runs think the flag is a separate argument
+ * and thus produces an output saying that they failed to execute.
+ * Run : ./q3 ./executable1 ./executable2 -Gopal
+ * Run : ./q3 ls -l ps -ef
  * ****************************************************************/
 
 #include <stdio.h>
@@ -48,7 +56,7 @@ char **process_next_arg(int argc, char *argv[], int current_index) {
   cmd = (char **)malloc(sizeof(char *) * len + 1);
   for (; j <= len; j++) {
     if (j == len)
-      cmd[j] = '\0';
+      cmd[j] = NULL;
     else
       cmd[j] = argv[j + current_index];
   }

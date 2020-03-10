@@ -1,24 +1,27 @@
-/*
-This is a simple extension of the previous assignment titled " Inter-Process Communication - 
-A simple assignment on shared memory involving 2 processes and a shared integer". 
-You may make a copy of the file you have created there and start working on the copy for this assignment.
-
-Let there be 2 processes P1 and P2, where P2 is created by P1. 
-That is, P1 is the parent of the child process P2. 
-As shown in the following figure P1 and P2 "share" an integer variable n and a character variable c 
-(which works as a flag).
-P1 creates n and c, and initializes c to 'n'. 
-Subsequently, P1 regularly  "wakes up" (from "sleep") after a random amount of 
-time (not more than 2 seconds) checks the value of c and if c is 'y'  
-then prints the value of n  and makes c to be 'n' again. 
-
-On the other hand, P2 regularly  "wakes up" (from "sleep") after a random amount of 
-time (not more than 2 seconds) checks the value of c and if c is 'n' then assigns 
-some random value to n, prints that value, and makes c to be 'y'.
-
-If the program execution is terminated by the user (by pressing  Ctrl-C), 
-both P1 and P2 should terminate and the allocated shared memory should be released.
-*/
+/******************************************************************
+ * This is a simple extension of the previous assignment titled " Inter-Process Communication - 
+ * A simple assignment on shared memory involving 2 processes and a shared integer". 
+ * You may make a copy of the file you have created there and start working on the copy for this assignment.
+ *
+ * Let there be 2 processes P1 and P2, where P2 is created by P1. 
+ * That is, P1 is the parent of the child process P2. 
+ * As shown in the following figure P1 and P2 "share" an integer variable n and a character variable c 
+ * (which works as a flag).
+ * P1 creates n and c, and initializes c to 'n'. 
+ * Subsequently, P1 regularly  "wakes up" (from "sleep") after a random amount of 
+ * time (not more than 2 seconds) checks the value of c and if c is 'y'  
+ * then prints the value of n  and makes c to be 'n' again. 
+ *
+ * On the other hand, P2 regularly  "wakes up" (from "sleep") after a random amount of 
+ * time (not more than 2 seconds) checks the value of c and if c is 'n' then assigns 
+ * some random value to n, prints that value, and makes c to be 'y'.
+ * 
+ * If the program execution is terminated by the user (by pressing  Ctrl-C), 
+ * both P1 and P2 should terminate and the allocated shared memory should be released.
+ * -------------------------------------------------------------
+ * Compile : gcc q1.c -o q1
+ * Run : ./q1 (Hit Ctrl+C to stop execution.)
+******************************************************************/
 
 #include <stdio.h>
 #include <unistd.h> 

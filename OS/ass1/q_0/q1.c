@@ -3,6 +3,9 @@
 /****************************************************************
  * A C program that creates 3 child processes P1,P2 and P3,
  * such that each process prints "Hello World! I am Pi".
+ * 
+ * Compile : gcc q1.c -o q1
+ * Run : ./q1
  * **************************************************************/
 
 #include <stdio.h>

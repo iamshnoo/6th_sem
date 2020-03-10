@@ -1,15 +1,18 @@
-/*
-Use of pipe system call
-A pipe is a system call that is used in Linux and other Unix-like operating
-systems to send the output of one command/program/process to another
-command/program/process for further processing. In this assignment you have to
-write a program that creates a pipe. One command will write its output in the
-write end of the pipe and the other command will take its input from the read
-end of the pipe and finally prints it output to the standard output. So when the
-program is executed  as  ./a.out cmd1 | cmd2 (read | as pipe)  your output of
-cmd1 will be written in the write end of the pipe and cm2 read from read end of
-the pipe and finally prints its out put the screen.
-*/
+/******************************************************************
+ * Use of pipe system call
+ * A pipe is a system call that is used in Linux and other Unix-like operating
+ * systems to send the output of one command/program/process to another
+ * command/program/process for further processing. In this assignment you have to
+ * write a program that creates a pipe. One command will write its output in the
+ * write end of the pipe and the other command will take its input from the read
+ * end of the pipe and finally prints it output to the standard output. So when the
+ * program is executed  as  ./a.out cmd1 | cmd2 (read | as pipe)  your output of
+ * cmd1 will be written in the write end of the pipe and cm2 read from read end of
+ * the pipe and finally prints its out put the screen.
+ * ---------------------------------------------------------------
+ * Compile :gcc q0.c -o q0
+ * Run : ./q0 ls wc
+ *****************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>

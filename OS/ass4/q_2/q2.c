@@ -1,30 +1,33 @@
-/*
-This is a simple extension of the previous assignment titled "Inter-Process Communication - 
-A simple assignment on shared memory involving 2 processes, a shared integer and a shared character c". 
-You may make a copy of the file you have created there and start working on that copy for this assignment.
-
-Let there be a process P0 that creates n number (value of n is given by the user)  
-of child processes  P1, P2, ..., Pn, As shown in the following figure, 
-all these processes  "share" integer variables n and  pid, and a character variable c (which works as a flag).
-
-P0 creates n, pid, and c; and initializes c to 'n'. 
-Subsequently, P0 regularly  "wakes up" (from "sleep") after a random amount 
-of time (not more than 2 seconds) checks the value of c and if c is 'y'  
-then prints the value of n (along with the corresponding pid) and makes c to be 'n' again. 
-
-On the other hand, every Pi, 1≤ i ≤n,   regularly  "wakes up" (from "sleep") after a 
-random amount of time (not more than 2 seconds) checks the value of c and if c is 'n' 
-then assigns some random value to n, along with its process id to pid, 
-prints that value along with its own process id, and makes c to be 'y'.
-
-If the program execution is terminated by the user (by pressing  Ctrl-C), 
-both P0 and Pi, 1≤ i ≤n should terminate and the allocated shared memory should be released.
-*/
+/******************************************************************
+ * This is a simple extension of the previous assignment titled "Inter-Process Communication - 
+ * A simple assignment on shared memory involving 2 processes, a shared integer and a shared character c". 
+ * You may make a copy of the file you have created there and start working on that copy for this assignment.
+ *
+ * Let there be a process P0 that creates n number (value of n is given by the user)  
+ * of child processes  P1, P2, ..., Pn, As shown in the following figure, 
+ * all these processes  "share" integer variables n and  pid, and a character variable c (which works as a flag).
+ *
+ * P0 creates n, pid, and c; and initializes c to 'n'. 
+ * Subsequently, P0 regularly  "wakes up" (from "sleep") after a random amount 
+ * of time (not more than 2 seconds) checks the value of c and if c is 'y'  
+ * then prints the value of n (along with the corresponding pid) and makes c to be 'n' again. 
+ *
+ * On the other hand, every Pi, 1≤ i ≤n,   regularly  "wakes up" (from "sleep") after a 
+ * random amount of time (not more than 2 seconds) checks the value of c and if c is 'n' 
+ * then assigns some random value to n, along with its process id to pid, 
+ * prints that value along with its own process id, and makes c to be 'y'.
+ *
+ * If the program execution is terminated by the user (by pressing  Ctrl-C), 
+ * both P0 and Pi, 1≤ i ≤n should terminate and the allocated shared memory should be released.
+ * -------------------------------------------------------------
+ * Compile : gcc q2.c -o q2
+ * Run : ./q2 3(Hit Ctrl+C to stop execution.)
+******************************************************************/
 
 /*
  * Note : I am taking the input value of n from cmdline args.
- *        Compile the program using gcc q2.c
- *        Run the program using ./a.out 3 (will give n=3) 
+ *        Compile the program using gcc q2.c -o q2
+ *        Run the program using ./q2 3 (will give n=3) 
 */
 
 #include <stdio.h>

@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
   int num_processes = 1;
   printf("Process count after exec : ");
   fflush(stdout);
-  system("ps --no-headers | wc -l");
+  system("ps | wc -l");
   printf("\n");
   return 0;
 }

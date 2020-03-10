@@ -9,6 +9,11 @@
  * in place of executable files the user provides a text file for execution.
  * Write your observation and justification for this online in the given
  * text-area!
+ * ---------------------------------------------------------------
+ * Compile : gcc q1.c -o q1
+ * Run : ./q1 ./executable1 ./executable1 ./executable1
+ * Run : ./q1 ./executable1 
+ * Run : ./q1 ./abc.txt
  * **************************************************************/
 
 #include <errno.h>
@@ -23,7 +28,7 @@ int main(int argc, char *argv[]) {
   pid_t pids[argc];
   for (int counter = 1; counter < argc; counter++) {
     fflush(stdout);
-    char *cmd[] = {argv[counter], '\0'};
+    char *cmd[] = {argv[counter], NULL};
     if ((pids[counter] = fork()) == 0) {
       execvp(cmd[0], cmd);
       exit(0);
