@@ -7,7 +7,7 @@
  * process.
  * ------------------------------------------------------------------
  * File test.c has been executed to produce the executable binary q0_param,
- * which is used in this file on line 38. (gcc test.c -o q0_param)
+ * which is used in this file on line 48. (gcc test.c -o q0_param)
  *
  * Compile : gcc q0.c -o q0_output
  * Run : ./q0_output
