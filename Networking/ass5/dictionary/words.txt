@@ -1,0 +1,10 @@
+above - below
+accept - reject
+easy - hard
+enter - exit
+healthy - sick
+hot - cold
+left - right
+success - failure
+summer - winter
+up - down
