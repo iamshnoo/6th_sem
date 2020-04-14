@@ -1,9 +1,11 @@
 /**
  * @file shelly.c
  * @author Anjishnu Mukherjee
+ *
  * @brief A custom shell that makes use of the readline library.
  * http://man7.org/linux/man-pages/man3/readline.3.html for supporting history
  * of input commands provided and tab-completion of filenames.
+ *
  * @ref I have used a few sources to understand more about the readline library
  * other than the man pages. I wanted to take input in a manner similar to gets
  * and also to support history feature of terminals. The readline library allows
@@ -15,9 +17,16 @@
  * http://web.mit.edu/gnu/doc/html/rlman_2.html
  * https://eli.thegreenplace.net/2016/basics-of-using-the-readline-library/
  *
- * Compile using gcc shelly.c -o shelly -lreadline
- * Run using ./shelly
- * @date 2020-04-10
+ * -----------------------------------------------------------------------------
+ * Install readline using [sudo apt-get install lib32readline7 lib32readline-dev]
+ * Compile using [gcc shelly.c -o shelly -lreadline]
+ * Run using [./shelly] (interactive mode) or [./shelly cmds.sh] (batch mode)
+ * -----------------------------------------------------------------------------
+ *
+ * @version 0.3
+ * @date 2020-03-11, 2020-04-11
+ *
+ * @copyright Copyright (c) 2020
  *
  */
 
@@ -27,7 +36,10 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <readline/readline.h> // might need to compile using -lreadline
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <readline/readline.h> // might need to install readline first
 #include <readline/history.h>
 
 #define MAXCOM 1000
@@ -39,6 +51,19 @@
  * Basically it is the equivalent of doing Ctrl+L.
  */
 #define clear() printf("\033[H\033[J")
+
+// In-built commands for this shell.
+#define NUM_OWN_CMDS 6
+#define EXIT "exit"
+#define CD "cd"
+#define HELP "help"
+#define HELLO "hello"
+#define PWD "pwd"
+#define CLEAR "clear"
+
+/* -------------------------- Global Variable --------------------------------*/
+
+const char* listOfOwnCmds[NUM_OWN_CMDS] = {EXIT,CD,HELP,HELLO,PWD,CLEAR};
 
 /* -------------------------- Helper Functions -------------------------------*/
 
@@ -65,7 +90,7 @@ void PrintDir()
 {
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd));
-	printf("\nDir: %s\n", cwd);
+	printf("\nDir: %s", cwd);
 	return;
 }
 
@@ -92,6 +117,8 @@ void OpenHelp()
 		"\n2. Main Features:"
 		"\n>  ----------------\n"
 		"\n>  Pipe handling for upto 2 commands."
+		"\n>  Handling 2 commands connected by ; or && or ||."
+		"\n>  Batch mode execution (./shelly script.txt executes cmds in script sequentially.)"
 		"\n>  History of commands (use ↑ and ↓ to navigate)."
 		"\n>  Tab completion of filenames."
 		"\n>  Line editing after having typed a command word."
@@ -101,23 +128,31 @@ void OpenHelp()
   return;
 }
 
+// Helper function to check if a command belongs to the list of in-built commands.
+int CheckOwnCmd(char **parsed)
+{
+	int i;
+	int flag = 0;
+	for(i = 0; i < NUM_OWN_CMDS; i++)
+	{
+		if(strcmp(parsed[0],listOfOwnCmds[i]) == 0)
+		{
+			flag = 1;
+			break;
+		}
+	}
+	return flag;
+}
+
 /* ----------------------- Execution Functions -------------------------------*/
 
 // Function to execute commands built into this shell.
 int ExecOwnCmd(char** parsed)
 {
-	int noOfOwnCmds = 6, i, switchOwnArg = 0;
-	char* listOfOwnCmds[noOfOwnCmds];
+	int i, switchOwnArg = 0;
 	char* username;
 
-	listOfOwnCmds[0] = "exit";
-	listOfOwnCmds[1] = "cd";
-	listOfOwnCmds[2] = "help";
-	listOfOwnCmds[3] = "hello";
-	listOfOwnCmds[4] = "pwd";
-	listOfOwnCmds[5] = "clear";
-
-	for (i = 0; i < noOfOwnCmds; i++)
+	for (i = 0; i < NUM_OWN_CMDS; i++)
 	{
 		if (strcmp(parsed[0], listOfOwnCmds[i]) == 0)
 		{
@@ -144,6 +179,7 @@ int ExecOwnCmd(char** parsed)
 				return 1;
 		case 5:
 				PrintDir();
+				printf("\n");
 				return 1;
 		case 6:
 				clear();
@@ -158,9 +194,10 @@ int ExecOwnCmd(char** parsed)
 // Function to execute system commands.
 // All single commands (including those with arguments) supported in UNIX
 // are supported by this function.
-void ExecArgs(char** parsed)
+int ExecArgs(char** parsed)
 {
 	// Fork to create child.
+	int status;
 	pid_t pid = fork();
 	if (pid == -1)
 	{
@@ -178,18 +215,14 @@ void ExecArgs(char** parsed)
 	}
 
 	// Parent of child.
-	else
-	{
-		// Parent waits for child to terminate.
-		wait(NULL);
-	}
+
+	// Parent waits for child to terminate.
+	wait(&status);
+	return status;
 }
 
-// Function to execute piped system commands.
-// Currently only supports command1 | command2.
-// Command 1 is present in "parsed".
-// Command 2 is present in "parsedpipe".
-// More than 2 commands are not supported yet in this function.
+// More than 2 commands are not supported yet in the 4 functions below.
+// Function to execute commands of the form command1 | command2.
 void ExecArgsPiped(char** parsed, char** parsedpipe)
 {
 	// 0 is read end, 1 is write end.
@@ -264,30 +297,82 @@ void ExecArgsPiped(char** parsed, char** parsedpipe)
 	}
 }
 
-/* ----------------------- String Parsing Functions --------------------------*/
-
-// Helper function for finding pipe.
-// This function currently assumes input to be 2 piped commands
-// of the form command 1 | command 2, where each command may have arguments.
-// More than 2 commands are not supported yet in this function.
-// str is the input string.
-// The parsed output is stored in "strPiped".
-int ParsePipe(char* str, char** strPiped)
+// Function to execute commands of the form command1 ; command2.
+void ExecArgsSerial(char** parsed, char** parsedSerial)
 {
-	int i;
-	for (i = 0; i < 2; i++)
+	if(CheckOwnCmd(parsed))
+		ExecOwnCmd(parsed);
+	else
+		ExecArgs(parsed);
+
+	if(CheckOwnCmd(parsedSerial))
+		ExecOwnCmd(parsedSerial);
+	else
+		ExecArgs(parsedSerial);
+}
+
+// Function to execute commands of the form command1 && command2.
+void ExecArgsAnd(char** parsed, char** parsedAnd)
+{
+	if(CheckOwnCmd(parsed))
 	{
-		strPiped[i] = strsep(&str, "|");
-		if (strPiped[i] == NULL)
-			break;
+		ExecOwnCmd(parsed);
+		if(CheckOwnCmd(parsedAnd))
+			ExecOwnCmd(parsedAnd);
+		else
+			ExecArgs(parsedAnd);
 	}
 
-	if (strPiped[1] == NULL)
-		return 0; // returns zero if no pipe is found.
+	else
+	{
+		int status = ExecArgs(parsed);
+		if(status == 0)
+		{
+			if(CheckOwnCmd(parsedAnd))
+				ExecOwnCmd(parsedAnd);
+			else
+				ExecArgs(parsedAnd);
+		}
+	}
+}
+
+// Function to execute commands of the form command1 || command2.
+void ExecArgsOr(char** parsed, char** parsedOr)
+{
+	if(CheckOwnCmd(parsed))
+		ExecOwnCmd(parsed);
+
+	else
+	{
+		int status = ExecArgs(parsed);
+		if(status != 0)
+		{
+			if(CheckOwnCmd(parsedOr))
+				ExecOwnCmd(parsedOr);
+			else
+				ExecArgs(parsedOr);
+		}
+	}
+}
+
+/* ----------------------- String Parsing Functions --------------------------*/
+
+// Helper function for finding delimiters in str.
+// This function currently assumes input to be 2 commands
+// of the form command 1 [delim] command 2, where each command may have arguments.
+// More than 2 commands are not supported yet in this function.
+// str is the input string.
+// The parsed output is stored in "strCmd".
+int ParseMultipleCommands(char* str, char** strCmd, const char* delim)
+{
+	strCmd[0] = strtok(str, delim);
+	strCmd[1] = strtok(NULL, delim);
+
+	if (strCmd[1] == NULL)
+		return 0; // returns zero if no delim is found.
 
 	else
 		return 1;
-
 }
 
 // Helper function for parsing arguments to commands.
@@ -311,35 +396,75 @@ void ParseSpace(char* str, char** parsed)
 	return;
 }
 
-// Wrapper function to call helper functions.
+// Wrapper function to call string parsing functions and execution functions.
 // str is the input string. Contains a line of input taken using TakeInput().
-// Outputs are stored in "parsed" and "parsedPipe" arrays.
+// Outputs are stored in "parsed" and "parsedMult" arrays.
 // Assumptions : Either single commands or single comands with arguments or
-// 2 piped commands or 2 piped commands with arguments can be processed with
-// this function. Commands connected with "&&" or other symbols cannot be
-// processed yet using this function.
-int ProcessString(char* str, char** parsed, char** parsedPipe)
+// 2 "delim" connected commands or 2 "delim" connected commands with arguments
+// can be processed with this function.
+void ProcessInputAndExecuteCommands(char* str, char** parsed, char** parsedMult)
 {
-	char* strPiped[2];
-	int piped = 0;
+	char* strConnected[2] = {NULL, NULL};
+	int mult = 0; // multiple commands present connected by delimiters.
 
-	// This if block implicitly assumes that this shell currently supports
-	// only 2 piped commands of the form command 1 | command 2.
-	piped = ParsePipe(str, strPiped);
-	if (piped)
+	// This if-else construct implicitly assumes that this shell currently supports
+	// only 2 commands of the form command 1 [delim] command 2,
+	// where [delim] is one of ";", "&&", "||" or "\" and neither command 1 nor
+	// command 2 can be a command that is built into this shell.
+	if(strchr(str , ';'))
 	{
-		ParseSpace(strPiped[0], parsed);
-		ParseSpace(strPiped[1], parsedPipe);
+		mult = 1;
+		ParseMultipleCommands(str, strConnected, ";");
+	}
+	else if(strstr(str , "&&"))
+	{
+		mult = 2;
+		ParseMultipleCommands(str, strConnected, "&&");
+	}
+	else if(strstr(str , "||"))
+	{
+		mult = 3;
+		ParseMultipleCommands(str, strConnected, "||");
+	}
+	else if(strchr(str , '|'))
+	{
+		mult = 4;
+		ParseMultipleCommands(str, strConnected, "|");
 	}
 
-	else
+	if (mult)
+	{
+		ParseSpace(strConnected[0], parsed);
+		ParseSpace(strConnected[1], parsedMult);
+		switch (mult)
+		{
+			case 1:
+					ExecArgsSerial(parsed, parsedMult);
+					return;
+			case 2:
+					ExecArgsAnd(parsed, parsedMult);
+					return;
+			case 3:
+					ExecArgsOr(parsed, parsedMult);
+					return;
+			case 4:
+					ExecArgsPiped(parsed, parsedMult);
+					return;
+
+			default:
+					break;
+		}
+	}
+
+	else // mult = 0
+	{
 		ParseSpace(str, parsed);
+		if(CheckOwnCmd(parsed))
+			ExecOwnCmd(parsed);
+		else
+			ExecArgs(parsed);
+	}
 
-	if (ExecOwnCmd(parsed))
-		return 0;
-
-	else
-		return 1 + piped;
 }
 
 // Function to take input from terminal, store it in a string
@@ -350,7 +475,7 @@ int TakeInput(char* str)
 	char* buf;
 
 	// Allocates memory using malloc and hence we free() it after usage is over.
-	buf = readline(">>> ");
+	buf = readline("\n>>> ");
 	// Only add non-empty lines to history.
 	if (strlen(buf) != 0)
 	{
@@ -368,9 +493,9 @@ int TakeInput(char* str)
 
 int main(int argc, char *argv[])
 {
+	freopen(argv[1], "r", stdin); // allows for batch processing of commands.
 	char inputString[MAXCOM], *parsedArgs[MAXLIST];
-	char* parsedArgsPiped[MAXLIST];
-	int execFlag = 0;
+	char* parsedArgsMult[MAXLIST];
 
 	InitShell();
 	while (1)
@@ -382,47 +507,9 @@ int main(int argc, char *argv[])
 		if (TakeInput(inputString))
 			continue;
 
-		// Process the input and set a flag to decide execution.
-		// execFlag = { 0, no command or built-in command
-		//						{ 1, simple system command (maybe with flags)
-		//						{ 2, piped commands
-		execFlag = ProcessString(inputString, parsedArgs, parsedArgsPiped);
-
-		// Execute input commands.
-		if (execFlag == 1)
-			ExecArgs(parsedArgs);
-
-		if (execFlag == 2)
-			ExecArgsPiped(parsedArgs, parsedArgsPiped);
+		// Parse the input string and excute it accordingly.
+		ProcessInputAndExecuteCommands(inputString, parsedArgs, parsedArgsMult);
 	}
 
 	return 0;
 }
-
-/*
- *	Function: tokenizeString
- *	Splits a string according to the given delimiter
- *	Parameters:
- *		char** args (OUTPUT)	- array of tokens created
- *		int *argc (OUTPUT)		- number of tokens created
- *		char *str							- input string to tokenize
- *		const char* delim			- delimiter used to tokenize the string
- *	Returns:
- *		None
-
-void tokenizeString(char ** args, int * argc, char * str,
-    const char * delim) {
-    char * token;
-    int pc;
-    token = strtok(str, delim);
-    int cnt = -1;
-    while (token) {
-        args[++cnt] = (char * ) malloc((sizeof(token) + 1) * sizeof(char));
-        strcpy(args[cnt], token);
-        trimString(args[cnt]);
-        token = strtok(NULL, delim);
-    }
-    args[++cnt] = NULL;
-    * argc = cnt;
-}
-*/
