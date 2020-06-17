@@ -1,5 +1,5 @@
 # importing requisites
-import math 
+import math
 import random
 from urllib.request import urlretrieve
 import pandas as pd

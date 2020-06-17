@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -74,7 +74,7 @@ def write_summary(x, y, w):
 
 def plot(x, y, X_train, predicted_values, all_losses):
     fig, axs = plt.subplots(1, 4, figsize=(10, 4), sharey=False)
-    
+
     axs[0].scatter(X_train[:, 0], y)
     axs[0].plot(X_train[:, 0], predicted_values,
             color='orange', label='Regression Line')

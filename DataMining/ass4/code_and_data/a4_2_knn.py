@@ -1,5 +1,5 @@
 # importing requisites
-import math 
+import math
 import random
 from urllib.request import urlretrieve
 import pandas as pd
@@ -46,12 +46,12 @@ def doKNN(XY,X,Y,class_label_list,num_folds):
         Y_new=np.array(Y_new)
         X1_new=np.array(X1_new)
         Y1_new=np.array(Y1_new)
-        
+
         # classify
         k_for_KNN=int(math.sqrt(len(Y_new))/2)
         neigh=KNeighborsClassifier(n_neighbors=k_for_KNN)
         neigh=neigh.fit(X_new,Y_new)
-        
+
         # print("\nHere's the prediction: \n")
         predicted_classes=neigh.predict(X1_new)
         # counting prediction results for each of the 10 folds
@@ -170,12 +170,12 @@ def doKNN(XY,X,Y,class_label_list,num_folds):
 # draw ROC curve
 def drawROC(XY,X,Y,class_label_list):
     X_new,X1_new,Y_new,Y1_new=train_test_split(X,Y,test_size=0.25,random_state=42)
-    
+
     # classify
     k_for_KNN=int(math.sqrt(len(Y_new))/2)
     neigh=KNeighborsClassifier(n_neighbors=k_for_KNN)
     neigh=neigh.fit(X_new,Y_new)
-    
+
     # find out required params
     predicted_classes=neigh.predict_proba(X1_new)
     fpr,tpr,threshold=metrics.roc_curve(Y1_new,predicted_classes[:,1],pos_label=class_label_list[len(class_label_list)-1])
@@ -198,7 +198,7 @@ print("\n============ "+dataset_name+" =============")
 df=pd.read_csv(dataset_name)
 XY=np.array(df)
 # splitting vertically into class label and attrs
-scaler=StandardScaler() 
+scaler=StandardScaler()
 X=np.array(scaler.fit_transform(df.drop(["class"],1).astype(float)))
 Y=np.array(df[['class']].astype(float))
 Y_mod=[]
@@ -216,7 +216,7 @@ df=pd.read_csv(dataset_name)
 # overall dataset
 XY=np.array(df)
 # splitting vertically into class label and attrs
-scaler=StandardScaler() 
+scaler=StandardScaler()
 X=np.array(scaler.fit_transform(df.drop(["class"],1).astype(float)))
 Y=np.array(df[['class']].astype(float))
 Y_mod=[]
@@ -234,7 +234,7 @@ df=pd.read_csv(dataset_name)
 # overall dataset
 XY=np.array(df)
 # splitting vertically into class label and attrs
-scaler=StandardScaler() 
+scaler=StandardScaler()
 X=np.array(scaler.fit_transform(df.drop(["class"],1).astype(float)))
 Y=np.array(df[['class']].astype(float))
 Y_mod=[]
@@ -252,7 +252,7 @@ df=pd.read_csv(dataset_name)
 # overall dataset
 XY=np.array(df)
 # splitting vertically into class label and attrs
-scaler=StandardScaler() 
+scaler=StandardScaler()
 X=np.array(scaler.fit_transform(df.drop(["class"],1).astype(float)))
 Y=np.array(df[['class']].astype(float))
 Y_mod=[]

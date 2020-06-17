@@ -1,5 +1,5 @@
 # importing requisites
-import math 
+import math
 import random
 from urllib.request import urlretrieve
 import pandas as pd
@@ -17,8 +17,8 @@ from sklearn.neighbors import NearestNeighbors
 
 # DBSCAN
 def clusterDBSCAN(X,epsilon,minimum_samples):
-    dbscan_clust=DBSCAN(eps=epsilon,min_samples=minimum_samples).fit(X) 
-    labels=dbscan_clust.labels_ 
+    dbscan_clust=DBSCAN(eps=epsilon,min_samples=minimum_samples).fit(X)
+    labels=dbscan_clust.labels_
     return labels
 
 # Silhoutte index
@@ -130,7 +130,7 @@ def getDunnIndex(clusters,cols_to_be_ignored=[]):
 # call DBSCAN
 dataset_name="iris.csv"
 df=pd.read_csv(dataset_name)
-scaler=MinMaxScaler() 
+scaler=MinMaxScaler()
 X=np.array(df.drop(["class"],1).astype(float))
 # # helper code segment to determine epsilon
 # # ==============start===============
@@ -151,7 +151,7 @@ labels1=clusterDBSCAN(X1,0.5,5)
 
 dataset_name2="wdbc.csv"
 df2=pd.read_csv(dataset_name2)
-scaler2=MinMaxScaler() 
+scaler2=MinMaxScaler()
 X2=np.array(scaler2.fit_transform(df2.drop(['class'],1).astype(float)))
 labels2=clusterDBSCAN(X2,0.4,14)
 

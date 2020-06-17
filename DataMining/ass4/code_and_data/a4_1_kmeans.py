@@ -1,5 +1,5 @@
 # importing requisites
-import math 
+import math
 import random
 from urllib.request import urlretrieve
 import pandas as pd
@@ -130,13 +130,13 @@ def getDunnIndex(clusters,cols_to_be_ignored):
 # call K-Means
 dataset_name="iris.csv"
 df=pd.read_csv(dataset_name)
-scaler=StandardScaler() 
+scaler=StandardScaler()
 X=np.array(scaler.fit_transform(df.drop(["class"],1).astype(float)))
 labels=clusterKMeans(X,3)
 
 dataset_name1="bcw.csv"
 df1=pd.read_csv(dataset_name1)
-scaler1=StandardScaler() 
+scaler1=StandardScaler()
 X1=np.array(scaler1.fit_transform(df1.drop(["class"],1).astype(float)))
 labels1=clusterKMeans(X1,2)
 
@@ -260,4 +260,4 @@ print(getDunnIndex(clusters2,[7]))
 
 # 0.4506120960157493
 # 0.9278712249013424
-# 0.5000640882162124 
+# 0.5000640882162124

@@ -1,5 +1,5 @@
 # importing requisites
-import math 
+import math
 import random
 from urllib.request import urlretrieve
 import pandas as pd
@@ -27,7 +27,7 @@ def removeSublist(lst):
                     break
             j+=1
         i+=1
-    return res 
+    return res
 
 def intersect(lst,lst1):
     return len(set(lst)&set(lst1))
@@ -60,7 +60,7 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
     for i in range(num_instances):
         temp=[]
         for j in range(num_instances):
-            temp.append(0)    
+            temp.append(0)
         diss_mat.append(temp)
     for i in range(num_instances):
         for j in range(i+1,num_instances):
@@ -97,9 +97,9 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
     new_clusters=[]
     while count!=reqd_clusters:
         clusters_after_removal=removeSublist(clusters)
-        
+
         num_clusters=len(clusters_after_removal)
-        sim_matrix=[[1 for x in range(num_clusters)] for y in range(num_clusters)]    
+        sim_matrix=[[1 for x in range(num_clusters)] for y in range(num_clusters)]
 
         #fill up this matrix
         for i in range(num_clusters):
@@ -108,7 +108,7 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
                 if i==j:
                     continue
                 sim_matrix[j][i]=sim_matrix[i][j]
-        
+
         #find max sim_matrix[i][j] and merge clusters[i] and clusters[j]
         max=0
         for lst in sim_matrix:
@@ -117,7 +117,7 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
                     max=x
         max_value_locs=np.argwhere(np.array(sim_matrix)==max)
         random_loc=random.choice(max_value_locs)
-        
+
         #merge Ci and Cj where i and j are given in random_loc
         new_clusters=clusters_after_removal[:]
         i=random_loc[0]
@@ -131,7 +131,7 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
         clusters=new_clusters[:]
 
     # last step
-    x=[] 
+    x=[]
     for i in range(num_attrs):
         temp=[]
         for j in range(num_instances):
@@ -176,7 +176,7 @@ def clusterPrev(df,reqd_clusters,num_instances,num_attrs):
     # print("\nSizes: \n")
     # for i in range(reqd_clusters):
     #     print(str(len(clustern[i])))
-    
+
     # build the result to be returned
     labels=[]
     for i in range(num_instances):
